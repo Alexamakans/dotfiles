@@ -50,6 +50,8 @@ in
       shikane # Dynamic display output configuration
 
       discord
+
+      zoxide
     ];
 
     # Home Manager can also manage your environment variables through
@@ -109,6 +111,11 @@ in
           signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP6v8sgTuwobr8g+NnGZm72/E9xjgjXjy5IS3QWj3lga";
         };
       };
+    };
+
+    programs.zoxide = {
+      enableBashIntegration = true;
+      flags = "--cmd cd bash";
     };
   }
 ]

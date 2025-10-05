@@ -44,5 +44,6 @@ nl.setup({
                 "$FILENAME",
             },
         }),
+        nl.builtins.formatting.nixfmt,
     },
 })

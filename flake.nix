@@ -5,9 +5,11 @@
     nixpkgs.url = "github:Alexamakans/nixpkgs/release-25.05";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }:
+  outputs = { self, nixpkgs, home-manager, nix-flatpak, ... }:
   let
     mkHost = { host, user, system }:
       nixpkgs.lib.nixosSystem {
@@ -15,6 +17,7 @@
 	modules = [
 	  # Per-host NixOS config (should import hardware-configuration.nix)
           ./hosts/${host}/configuration.nix
+          nix-flatpak.nixosModules.nix-flatpak
 
 	  ({ ... }: {
             nix.settings.experimental-features = [ "nix-command" "flakes" ];

@@ -25,26 +25,27 @@ in {
       default = true;
       description = "Add the Flathub remote.";
     };
+  };
 
-    config = mkIf cfg.enable {
-      services.flatpak.enable = true;
+  config = mkIf cfg.enable {
+    services.flatpak.enable = true;
 
-      services.flatpak.remotes = mkIf cfg.enableFlathub [
-        {
-	  name = "flathub";
-	  location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-	}
-      ];
+    services.flatpak.remotes = mkIf cfg.enableFlathub [
+      {
+        name = "flathub";
+        location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+      }
+    ];
 
-      xdg.portal.enable = true;
-      xdg.portal.extraPortals =
+    xdg.portal.enable = true;
+    xdg.portal.extraPortals =
         (optional (cfg.portalBackend == "wlr")   pkgs.xdg-desktop-portal-wlr) ++
         (optional (cfg.portalBackend == "gnome") pkgs.xdg-desktop-portal-gnome) ++
         (optional (cfg.portalBackend == "kde")   pkgs.xdg-desktop-portal-kde) ++
-        (optional ccfg.enableGtkPortal           pkgs.xdg-desktop-portal-gtk);
+        (optional cfg.enableGtkPortal            pkgs.xdg-desktop-portal-gtk);
 
-	environment.systemPackages = [ pkgs.flatpak ];
+    environment.systemPackages = [ pkgs.flatpak ];
 
-	security.polkit.enable = lib.mkDefault true;
-    };
-};
+    security.polkit.enable = lib.mkDefault true;
+  };
+}

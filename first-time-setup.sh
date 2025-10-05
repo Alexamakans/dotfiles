@@ -95,43 +95,36 @@ else
   fi
 fi
 
+arch=$(uname -m)
+os=$(uname -s)
+mysystem='unknown'
+case "$arch,$os" in
+	x86_64,Linux) mysystem='x86_64-linux' ;;
+	aarch64,Linux) mysystem='aarch64-linux' ;;
+	x86_64,Darwin) mysystem='x86_64-darwin' ;;
+	arm64,Darwin) mysystem='aarch64-darwin' ;;
+esac
+
 # Print instructions for flake.nix
 bold "Next steps for flake.nix"
 cat <<INSTR
 
 Edit $REPO_FLAKE and ensure you have:
 
-1) Inputs (if not already present):
-   inputs = {
-     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-     home-manager.url = "github:nix-community/home-manager/release-25.05";
-     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-   };
+1) A nixosConfigurations entry for this host:
 
-2) A nixosConfigurations entry for this host:
+     nixosConfigurations = {
+       # [...]
 
-   nixosConfigurations = {
-     $HOST_NAME = nixpkgs.lib.nixosSystem {
-       inherit system; # e.g., system = "x86_64-linux";
-       modules = [
-         ./hosts/$HOST_NAME/configuration.nix
-
-         ({ ... }: {
-           nix.settings.experimental-features = [ "nix-command" "flakes" ];
-         })
-
-         # Home Manager as a NixOS module:
-         home-manager.nixosModules.home-manager
-         {
-           home-manager.useGlobalPkgs = true;
-           home-manager.useUserPackages = true;
-           home-manager.users.$USER_NAME = import ./home/$USER_NAME/home.nix;
-         }
-       ];
+       # Add this
+       # $(hostname) = mkHost {
+       #   host = "$(hostname)";
+       #   users = "$(whoami)";
+       #   system = "$(echo "$mysystem")";
+       # };
      };
-   };
 
-3) Then build & switch:
+2) Then build & switch:
 
    sudo nixos-rebuild switch --flake "$REPO_ROOT#$HOST_NAME" \\
      --option experimental-features "nix-command flakes"

@@ -64,7 +64,7 @@
   programs.hyprland = {
     enable = true;
     withUWSM = true;
-    xwayland.enable = false;
+    xwayland.enable = true;
   };
 
   # List services that you want to enable:
@@ -138,7 +138,7 @@
     swappy
 
     networkmanagerapplet
-    # blueman
+    blueman
     pavucontrol
     brightnessctl
 

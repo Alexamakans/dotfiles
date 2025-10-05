@@ -2,7 +2,7 @@
   description = "NixOS + Home Manager (dotfiles)";
 
   inputs = {
-    nixpkgs.url = "github:Alexamakans/nixpkgs/master";
+    nixpkgs.url = "github:Alexamakans/nixpkgs/release-25.05";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
@@ -16,7 +16,7 @@
 	  # Per-host NixOS config (should import hardware-configuration.nix)
           ./hosts/${host}/configuration.nix
 
-	  ({ ... }): {
+	  ({ ... }: {
             nix.settings.experimental-features = [ "nix-command" "flakes" ];
 	  })
 
@@ -31,12 +31,6 @@
       };
   in {
     nixosConfigurations = {
-      # <host> = mkHost {
-      #   host = "<host>";
-      #   users = "<user>";
-      #   system = "<system>";
-      # };
-
       alex = mkHost {
         host = "alex";
 	user = "alex";

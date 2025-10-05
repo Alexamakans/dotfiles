@@ -87,6 +87,7 @@ in
 
   (mkHomeFileRecursive "/.config/kitty")
   (mkHomeFileRecursive "/.config/hypr")
+  (mkHomeFileRecursive "/.config/nvim")
 
   {
     programs.ssh = {

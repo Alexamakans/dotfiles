@@ -157,7 +157,11 @@
 
     openssl
     curl
-    npm
+
+    nodejs_22
+    # npm -g equivalent:
+    # nodePackages_latest.pnpm
+    nodePackages_latest.prettier
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [

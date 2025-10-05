@@ -1,3 +1,6 @@
 [user]
 	email = fougner.alexander@gmail.com
-	name = Alexamakans
+  name = Alexamakans
+
+[init]
+  defaultBranch = main

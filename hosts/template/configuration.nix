@@ -157,6 +157,7 @@
 
     openssl
     curl
+    npm
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [

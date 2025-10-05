@@ -138,5 +138,11 @@ in lib.mkMerge [
       enableBashIntegration = true;
       options = [ "--cmd" "cd" "--hook" "pwd" ];
     };
+
+    programs.viture = {
+      enable = true;
+      tracking.mode = "flake";
+      flakeSrc = inputs.viturewayland;
+    };
   }
 ]

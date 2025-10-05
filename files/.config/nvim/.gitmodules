@@ -1,0 +1,3 @@
+[submodule "tsparsers/tree-sitter-powershell"]
+	path = tsparsers/tree-sitter-powershell
+	url = git@github.com:airbus-cert/tree-sitter-powershell

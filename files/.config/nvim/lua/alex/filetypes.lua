@@ -1,0 +1,7 @@
+--vim.filetype.add({
+--    extension = {
+--        ps1 = "ps1",
+--        psd1 = "ps1",
+--        psm = "ps1",
+--    }
+--})

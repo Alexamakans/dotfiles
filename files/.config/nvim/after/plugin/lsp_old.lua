@@ -1,0 +1,371 @@
+--local capabilities = vim.lsp.protocol.make_client_capabilities()
+--capabilities.textDocument.completion.completionItem.snippetSupport = true
+--
+--require("lsp-zero").extend_lspconfig()
+--local lsp = require("lsp-zero")
+--
+--lsp.preset("recommended")
+--
+--local cmp = require("cmp")
+--local cmp_select = { behavior = cmp.SelectBehavior.Select }
+--cmp.setup({
+--    snippet = {
+--        expand = function(args)
+--            require("luasnip").lsp_expand(args.body)
+--        end,
+--    },
+--    window = {
+--        completion = cmp.config.window.bordered(),
+--        documentation = cmp.config.window.bordered(),
+--    },
+--    sources = {
+--        { name = "nvim_lua" },
+--        { name = "nvim_lsp" },
+--    },
+--    mapping = cmp.mapping.preset.insert({
+--        ["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
+--        ["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
+--        ["<C-y>"] = cmp.mapping.confirm({ select = true }),
+--        ["<C-f>"] = cmp.mapping.confirm({ select = true }),
+--        ["<C-Space>"] = cmp.mapping.complete(),
+--        ["<C-u>"] = cmp.mapping.scroll_docs(-4),
+--        ["<C-d>"] = cmp.mapping.scroll_docs(4),
+--    }),
+--})
+--
+--cmp.setup.cmdline("/", {
+--    sources = {
+--        { name = "buffer" },
+--    },
+--})
+--
+--cmp.setup.cmdline(":", {
+--    sources = cmp.config.sources({
+--        { name = "path" },
+--    }, {
+--        { name = "cmdline" },
+--    }),
+--})
+--
+--lsp.set_preferences({
+--    sign_icons = {},
+--})
+--
+-----@param client lsp.Client
+--local function my_on_attach(client, bufnr)
+--    lsp.default_keymaps({ buffer = bufnr })
+--
+--    local opts = { buffer = bufnr, remap = false }
+--    vim.keymap.set("n", "gd", function()
+--        vim.lsp.buf.definition()
+--    end, opts)
+--    vim.keymap.set("n", "K", function()
+--        vim.lsp.buf.hover()
+--    end, opts)
+--    vim.keymap.set("n", "<leader>vws", function()
+--        vim.lsp.buf.workspace_symbol()
+--    end, opts)
+--    vim.keymap.set("n", "<leader>vd", function()
+--        vim.diagnostic.open_float()
+--    end, opts)
+--    vim.keymap.set("n", "[d", function()
+--        vim.diagnostic.goto_next()
+--    end, opts)
+--    vim.keymap.set("n", "]d", function()
+--        vim.diagnostic.goto_prev()
+--    end, opts)
+--    vim.keymap.set("n", "<leader>vca", function()
+--        vim.lsp.buf.code_action()
+--    end, opts)
+--    vim.keymap.set("n", "<leader>vrr", function()
+--        vim.lsp.buf.references()
+--    end, opts)
+--    vim.keymap.set("n", "<leader>vrn", function()
+--        vim.lsp.buf.rename()
+--    end, opts)
+--
+--    -- The blow command will highlight the current variable and its usages in the buffer.
+--    if client.server_capabilities.documentHighlightProvider then
+--        vim.cmd([[
+--      hi! link LspReferenceRead Visual
+--      hi! link LspReferenceText Visual
+--      hi! link LspReferenceWrite Visual
+--    ]])
+--
+--        local gid = vim.api.nvim_create_augroup("lsp_document_highlight", { clear = true })
+--        vim.api.nvim_create_autocmd("CursorHold", {
+--            group = gid,
+--            buffer = bufnr,
+--            callback = function()
+--                vim.lsp.buf.document_highlight()
+--            end,
+--        })
+--
+--        vim.api.nvim_create_autocmd("CursorMoved", {
+--            group = gid,
+--            buffer = bufnr,
+--            callback = function()
+--                vim.lsp.buf.clear_references()
+--            end,
+--        })
+--    end
+--end
+--
+--lsp.on_attach(my_on_attach)
+--
+--require("mason").setup({
+--    ---@since 1.0.0
+--    -- [Advanced setting]
+--    -- The registries to source packages from. Accepts multiple entries. Should a package with the same name exist in
+--    -- multiple registries, the registry listed first will be used.
+--    registries = {
+--        "github:Crashdummyy/mason-registry",
+--        "github:mason-org/mason-registry",
+--    },
+--})
+--require("mason-lspconfig").setup({
+--    automatic_installation = true,
+--    ensure_installed = { "lua_ls" },
+--
+--    handlers = {
+--        lsp.default_setup,
+--    },
+--})
+--
+--require("lsp_signature").setup({
+--    close_timeout = 2000,
+--    transparency = 100, -- opacity, not transparency
+--})
+--
+--local lspconfig = require("lspconfig")
+--local ok, powershell = pcall(require, "powershell")
+--if ok then
+--    local bundle_path = vim.fn.stdpath("data") .. "/mason/packages/powershell-editor-services"
+--    powershell.setup({
+--        capabilities = capabilities,
+--        cmd = {
+--            "pwsh",
+--            "-NoLogo",
+--            "-NoProfile",
+--            "-Stdio",
+--            "-Command",
+--            bundle_path .. "/PowerShellEditorServices/Start-EditorServices.ps1",
+--        },
+--        bundle_path = bundle_path,
+--        filetypes = { "ps1", "psm1", "psd1" },
+--        settings = { powershell = { codeFormatting = { Preset = "OTBS" } } },
+--        shell = "pwsh",
+--        root_dir = lspconfig.util.find_git_ancestor,
+--        init_options = {
+--            enableProfileLoading = false,
+--        },
+--    })
+--end
+--
+----lspconfig.jedi_language_server.setup({})
+--
+--lspconfig.gopls.setup({
+--    cmd = { "gopls" },
+--    -- for postfix snippets and analyzers
+--    capabilities = capabilities,
+--    settings = {
+--        gopls = {
+--            experimentalPostfixCompletions = true,
+--            analyses = {
+--                unusedparams = true,
+--                shadow = true,
+--            },
+--            staticcheck = true,
+--            gofumpt = true,
+--        },
+--    },
+--})
+--
+--lspconfig.yamlls.setup({
+--    settings = {
+--        yaml = {
+--            schemas = {},
+--        },
+--    },
+--})
+--
+--lspconfig.azure_pipelines_ls.setup({
+--    capabilities = capabilities,
+--    root_dir = lspconfig.util.find_git_ancestor,
+--    on_init = function(client)
+--        client.config.settings.yaml.schemas = client.config.settings.yaml.schemas or {}
+--        client.notify("workspace/didChangeConfiguration")
+--        return true
+--    end,
+--    settings = {
+--        yaml = {
+--            trace = {
+--                server = "verbose",
+--            },
+--            schemas = {
+--                [vim.fn.stdpath("config") .. "/schemas/yaml/azure.json"] = {
+--                    "**/template-*.yaml",
+--                    "**/template-*.yml",
+--                    "**/pipeline-*.yaml",
+--                    "**/pipeline-*.yml",
+--                    "**/azure-pipelines.yaml",
+--                    "**/azure-pipelines.yml",
+--                },
+--            },
+--        },
+--    },
+--})
+--
+--lspconfig.rust_analyzer.setup({
+--    settings = {
+--        ["rust-analyzer"] = {
+--            checkOnSave = true,
+--            inlayHints = {
+--                enable = true,
+--                bindingModeHints = { enable = true },
+--                chainingHints = { enable = true },
+--                lifetimeElisionHints = {
+--                    enable = true,
+--                    useParameterNames = true,
+--                },
+--            },
+--            diagnostics = { enable = true },
+--            lens = {
+--                enable = true,
+--                debug = { enable = true },
+--            },
+--            highlightRelated = {
+--                references = { enable = true },
+--                exitPoints = { enable = true },
+--            },
+--            completion = {
+--                autoimport = { enable = true },
+--                autoselff = { enable = true },
+--            },
+--        },
+--    },
+--    on_attach = function(client, bufnr)
+--        if client.server_capabilities.inlayHintProvider then
+--            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+--            vim.api.nvim__buf_redraw_range(bufnr, 0, -1)
+--        end
+--
+--        my_on_attach(client, bufnr)
+--    end,
+--})
+--
+--lspconfig.arduino_language_server.setup({})
+--lspconfig.clangd.setup({
+--    cmd = {
+--        "clangd",
+--        "--background-index",
+--        "--clang-tidy",
+--        "--completion-style=bundled",
+--        "--header-insertion=iwyu",
+--    },
+--})
+--lspconfig.bicep.setup({})
+--lspconfig.bashls.setup({})
+--
+--lspconfig.quick_lint_js.setup({})
+--lspconfig.lua_ls.setup({
+--    on_attach = my_on_attach,
+--    capabilities = capabilities,
+--    settings = {
+--        Lua = {
+--            runtime = {
+--                version = "LuaJIT",
+--                path = vim.split(package.path, ";"),
+--            },
+--            diagnostics = {
+--                globals = { "vim" },
+--            },
+--            workspace = {
+--                library = { vim.env.VIMRUNTIME },
+--                checkThirdParty = false,
+--            },
+--            telemetry = {
+--                enable = false,
+--            },
+--            format = {
+--                enable = true,
+--                defaultConfig = {
+--                    indent_style = "space",
+--                    indent_size = "2",
+--                },
+--            },
+--        },
+--    },
+--})
+--lspconfig.glsl_analyzer.setup({})
+--lspconfig.zls.setup({
+--    on_attach = my_on_attach,
+--    capabilities = capabilities,
+--})
+--lspconfig.ts_ls.setup({
+--    on_attach = my_on_attach,
+--    capabilities = capabilities,
+--})
+--lspconfig.astro.setup({})
+--
+--lspconfig.cssls.setup({})
+--lspconfig.css_variables.setup({})
+--lspconfig.cssmodules_ls.setup({})
+--require("roslyn").setup({})
+--
+--vim.api.nvim_create_autocmd("BufWritePre", {
+--    pattern = {
+--        "*.go",
+--        --    "*.py",
+--        --    "*.lua",
+--        --    "*.yaml",
+--        --    "*.yml",
+--        --    "*.bicep",
+--        --    "*.rs",
+--        --    "*.sql",
+--        --    "*.js",
+--        --    "*.mjs",
+--        --    "*.ts",
+--        --    "*.ml",
+--        --    "*.cpp",
+--        --    "*.c",
+--        --    "*.h",
+--        --    "*.hpp",
+--        --    "*.sol",
+--        --    "*.sh",
+--    },
+--    command = "silent! lua vim.lsp.buf.format()",
+--})
+--
+--lsp.setup({
+--    inlay_hints = true,
+--})
+--vim.diagnostic.config({
+--    virtual_text = true,
+--})
+--
+----- self-developed lsp
+----lspconfig["ithree_ls"] = {
+----  default_config = {
+----    cmd = { "ithree-ls" },
+----    filetypes = "i3config",
+----    on_attach = my_on_attach,
+----    root_dir = function(fname)
+----      return lspconfig.util.find_git_ancestor(fname) or vim.fn.getcwd()
+----    end,
+----    flags = {
+----      debounce_text_changes = 150,
+----    },
+----  },
+----}
+----
+----lspconfig["ithree_ls"].setup({
+----  capabilities = capabilities,
+----})
+--
+--vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+--    pattern = vim.fn.expand("~/.config/i3/config"),
+--    callback = function()
+--        vim.bo.filetype = "i3config"
+--    end,
+--})

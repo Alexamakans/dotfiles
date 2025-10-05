@@ -5,11 +5,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ../../modules/flatpak.nix
-    ];
+  imports = [ ./hardware-configuration.nix ../../modules/flatpak.nix ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -18,10 +14,7 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   networking.hostName = "__HOST__"; # Define your hostname.
 
@@ -62,12 +55,6 @@
   #   enableSSHSupport = true;
   # };
 
-  programs.hyprland = {
-    enable = true;
-    withUWSM = true;
-    xwayland.enable = true;
-  };
-
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -77,22 +64,19 @@
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+        command =
+          "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
       };
     };
   };
 
-  services.printing = {
-    enable = false;
-  };
+  services.printing = { enable = false; };
 
   services.hardware.bolt.enable = true;
 
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-    ];
+    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
 
   security.rtkit.enable = true;
@@ -116,7 +100,8 @@
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;
 
-  fonts.packages = [] ++ builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+  fonts.packages = [ ] ++ builtins.filter lib.attrsets.isDerivation
+    (builtins.attrValues pkgs.nerd-fonts);
 
   # QOL env for Electron/Chromium apps on Wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
@@ -127,9 +112,7 @@
     enableGtkPortal = true;
   };
 
-  services.flatpak.packages = [
-    "com.spotify.Client"
-  ];
+  services.flatpak.packages = [ "com.spotify.Client" ];
 
   environment.systemPackages = with pkgs; [
     home-manager
@@ -164,16 +147,19 @@
     nodePackages_latest.prettier
   ];
 
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "1password"
-    "1password-cli"
-    "discord"
-  ];
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+    xwayland.enable = true;
+  };
+
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [ "1password" "1password-cli" "discord" ];
 
   programs._1password.enable = true;
   programs._1password-gui.enable = true;
   programs._1password-gui.polkitPolicyOwners = [ "__USER__" ];
-  
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

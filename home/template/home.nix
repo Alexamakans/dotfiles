@@ -8,8 +8,7 @@ let
       recursive = true;
     };
   };
-in 
-  lib.mkMerge [
+in lib.mkMerge [
   {
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
@@ -73,16 +72,19 @@ in
       BROWSER = "qutebrowser";
     };
 
-    home.file.".bashrc".source = dot + "/.bashrc";
+    programs.bash = { initExtra = builtins.readFile "${dot}/.bashrc"; };
+
     home.file.".gitconfig".source = dot + "/.gitconfig";
-    
+
     # qutebrowser:
     #   Manage specifics like config.py and quickmarks.
     #   Don't manage autoconfig.yml (qutebrowser rewrites it)
     #   In config.py, use:
     #     config.load_autoconfig(False)
-    xdg.configFile."qutebrowser/config.py".source = dot + "/.config/qutebrowser/config.py";
-    xdg.configFile."qutebrowser/quickmarks".source = dot + "/.config/qutebrowser/quickmarks";
+    xdg.configFile."qutebrowser/config.py".source = dot
+      + "/.config/qutebrowser/config.py";
+    xdg.configFile."qutebrowser/quickmarks".source = dot
+      + "/.config/qutebrowser/quickmarks";
   }
 
   (mkHomeFileRecursive "/.config/kitty")

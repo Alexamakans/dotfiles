@@ -8,8 +8,7 @@ let
       recursive = true;
     };
   };
-in 
-  lib.mkMerge [
+in lib.mkMerge [
   {
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
@@ -51,7 +50,7 @@ in
 
       discord
 
-      zoxide
+      zoxide # better cd
     ];
 
     # Home Manager can also manage your environment variables through
@@ -75,16 +74,19 @@ in
       BROWSER = "qutebrowser";
     };
 
-    home.file.".bashrc".source = dot + "/.bashrc";
+    programs.bash = { initExtra = builtins.readFile "${dot}/.bashrc"; };
+
     home.file.".gitconfig".source = dot + "/.gitconfig";
-    
+
     # qutebrowser:
     #   Manage specifics like config.py and quickmarks.
     #   Don't manage autoconfig.yml (qutebrowser rewrites it)
     #   In config.py, use:
     #     config.load_autoconfig(False)
-    xdg.configFile."qutebrowser/config.py".source = dot + "/.config/qutebrowser/config.py";
-    xdg.configFile."qutebrowser/quickmarks".source = dot + "/.config/qutebrowser/quickmarks";
+    xdg.configFile."qutebrowser/config.py".source = dot
+      + "/.config/qutebrowser/config.py";
+    xdg.configFile."qutebrowser/quickmarks".source = dot
+      + "/.config/qutebrowser/quickmarks";
   }
 
   (mkHomeFileRecursive "/.config/kitty")
@@ -104,18 +106,21 @@ in
       enable = true;
       extraConfig = {
         gpg.format = "ssh";
-        "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+        "gpg \"ssh\"".program =
+          "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
         commit.gpgsign = true;
 
         user = {
-          signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP6v8sgTuwobr8g+NnGZm72/E9xjgjXjy5IS3QWj3lga";
+          signingKey =
+            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP6v8sgTuwobr8g+NnGZm72/E9xjgjXjy5IS3QWj3lga";
         };
       };
     };
 
     programs.zoxide = {
+      enable = true;
       enableBashIntegration = true;
-      flags = "--cmd cd bash";
+      options = [ "--cmd" "cd" "--hook" "pwd" ];
     };
   }
 ]

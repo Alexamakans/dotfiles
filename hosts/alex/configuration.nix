@@ -111,7 +111,7 @@
   # networking.firewall.enable = false;
 
   networking.networkmanager.enable = true;
-  # services.blueman.enable = true;
+  services.blueman.enable = true;
 
   hardware.graphics.enable = true;
   hardware.graphics.enable32Bit = true;

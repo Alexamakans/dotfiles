@@ -54,6 +54,10 @@ in lib.mkMerge [
       # golang development
       go
       gopls
+
+      # c/c++ develeopment
+      cmake
+      pkg-config
     ];
 
     # Home Manager can also manage your environment variables through

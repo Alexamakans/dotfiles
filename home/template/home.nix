@@ -2,6 +2,7 @@
 
 let
   dot = __DOT__;
+  gobin = "${config.home.homeDirectory}/.local/bin";
   mkHomeFileRecursive = path: {
     home.file."${path}" = {
       source = dot + "${path}";
@@ -49,6 +50,10 @@ in lib.mkMerge [
       shikane # Dynamic display output configuration
 
       discord
+
+      # golang development
+      go
+      gopls
     ];
 
     # Home Manager can also manage your environment variables through
@@ -67,9 +72,13 @@ in lib.mkMerge [
     #
     #  /etc/profiles/per-user/alex/etc/profile.d/hm-session-vars.sh
     #
+
+    home.sessionPath = [ gobin ];
+
     home.sessionVariables = {
       EDITOR = "nvim";
       BROWSER = "qutebrowser";
+      GOBIN = gobin;
     };
 
     programs.bash = { initExtra = builtins.readFile "${dot}/.bashrc"; };

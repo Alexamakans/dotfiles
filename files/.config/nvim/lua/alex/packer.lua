@@ -69,13 +69,6 @@ return packer.startup(function(use)
     use("APZelos/blamer.nvim")
 
     use({
-        "iamcco/markdown-preview.nvim",
-        run = function()
-            vim.fn["mkdp#util#install()"]()
-        end,
-    })
-
-    use({
         "hedyhli/markdown-toc.nvim",
     })
 

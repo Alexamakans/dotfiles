@@ -59,31 +59,31 @@ vim.api.nvim_create_autocmd("LspAttach", {
 require("mason").setup({})
 local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-local vue_ls_path = vim.fn.expand(
-    '$MASON/packages/vue-language-server/node_modules/@vue/language-server')
-local vue_plugin = {
-    name = '@vue/typescript-plugin',
-    location = vue_ls_path,
-    languages = { 'vue' },
-    configNamespace = 'typescript',
-}
-local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
+--local vue_ls_path = vim.fn.expand(
+--    '$MASON/packages/vue-language-server/node_modules/@vue/language-server')
+--local vue_plugin = {
+--    name = '@vue/typescript-plugin',
+--    location = vue_ls_path,
+--    languages = { 'vue' },
+--    configNamespace = 'typescript',
+--}
+--local tsserver_filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' }
 
-local vtsls_config = {
-    settings = {
-        vtsls = {
-            tsserver = {
-                globalPlugins = {
-                    vue_plugin,
-                },
-            },
-        },
-    },
-    filetypes = tsserver_filetypes,
-}
-local vue_ls_config = {}
+--local vtsls_config = {
+--    settings = {
+--        vtsls = {
+--            tsserver = {
+--                globalPlugins = {
+--                    vue_plugin,
+--                },
+--            },
+--        },
+--    },
+--    filetypes = tsserver_filetypes,
+--}
+--local vue_ls_config = {}
 require("mason-lspconfig").setup({
-    ensure_installed = { "vue_ls", "vtsls", "lua_ls" },
+    ensure_installed = { "lua_ls" },
     handlers = {
         -- default for any server you didn't special-case
         function(server_name)
@@ -92,9 +92,9 @@ require("mason-lspconfig").setup({
     },
 })
 
-vim.lsp.config('vtsls', vtsls_config)
-vim.lsp.config('vue_ls', vue_ls_config)
-vim.lsp.enable({ 'vtsls', 'vue_ls' })
+--vim.lsp.config('vtsls', vtsls_config)
+--vim.lsp.config('vue_ls', vue_ls_config)
+--vim.lsp.enable({ 'vtsls', 'vue_ls' })
 
 
 

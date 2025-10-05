@@ -1,0 +1,329 @@
+/* NixOS logo */
+
+.nix-snowflake {
+    border: 1px solid #505055;
+    background-color: alpha(#252528, 0.45);
+    padding: 0.2rem 0.6rem;
+    margin: 0;
+    border-radius: 500rem;
+}
+
+/* Hyprland/Niri workspaces */
+
+#workspaces {
+    border: 1px solid #505055;
+    background-color: alpha(#404050, 0.45);
+    padding: 0.2rem 0.2rem;
+    margin: 4px 4px;
+    border-radius: 500rem;
+}
+
+#workspaces button {
+    padding: 0 12px;
+    color: #9090AA;
+    min-height: 1.6rem;
+    min-width: 1.6rem;
+    border-radius: 500rem;
+}
+
+#workspaces button label {
+    font-weight: bolder;
+    font-family: Ubuntu;
+    font-size: 14px;
+}
+
+#workspaces button.visible {
+}
+
+#workspaces button.active:hover,
+#workspaces button.active {
+    color: #ffffff;
+    background-color: mix(@theme_selected_bg_color, #C0C0C0, 0.25);
+    box-shadow: inset 0 -1px mix(@theme_selected_bg_color, #909090, 0.25);
+}
+
+#workspaces button.urgent {
+    background-color: @red;
+}
+
+#workspaces button:hover {
+    background-color: mix(@theme_selected_bg_color, #C0C0C0, 0.1);
+}
+
+#workspaces button.empty {
+    color: #953953;
+}
+
+/* Hyprland/Niri window */
+
+#window {
+    padding: 4px 12px;
+    border: none;
+    border-radius: 0;
+}
+
+#window label {
+    font-family: Ubuntu;
+    font-size: 14px;
+}
+
+/* Waybar widgets */
+
+.modules-left > widget > label,
+.modules-right > widget > label {
+    padding: 4px 12px;
+
+    border-radius: 500rem;
+    color: #ffffff;
+
+    min-width: 28px;
+    min-height: 28px;
+
+    background-color: alpha(#404050, 0.45);
+    margin: 4px 4px;
+}
+
+.modules-left > widget > label {
+    border-right: 1px solid #505055;
+}
+
+.modules-left > widget:hover > label {
+    background-color: alpha(#282832, 0.45);
+}
+
+.modules-right > widget > label {
+    border-left: 1px solid #505055;
+}
+
+/* Dinkur */
+#custom-dinkur {
+    background-color: alpha(#404050, 0.45);
+    color: #adbac7;
+    margin: 4px 4px;
+}
+
+
+/* Other default styling taken from
+ * https://github.com/Alexays/Waybar/blob/0.9.13/resources/style.css
+ */
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    /*font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;*/
+    font-family: FontAwesome, Miracode;
+    font-size: 11px;
+}
+
+window#waybar {
+    background-color: transparent;
+    color: #ffffff;
+    /* margin & padding don't work on "window" */
+}
+
+window#waybar > box.horizontal {
+    /*background-color: alpha(#252528, 0.45);*/
+    background-image: linear-gradient(to bottom, alpha(#555555, 0.45), alpha(#252528, 0.45));
+    border: 1px solid #505055;
+    margin: 4px 8px;
+    margin-bottom: 0;
+    border-radius: 500px;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+#clock {
+    background-color: alpha(#252528, 0.45);
+    margin: 0 0 0 8px;
+}
+
+#battery {
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+#battery.charging, #battery.plugged {
+    color: lightgreen;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
+}
+
+#battery.critical:not(.charging) {
+    color: #f53c3c;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+label:focus {
+    background-color: #000000;
+}
+
+#cpu {
+    color: #2ecc71;
+    font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+#memory {
+    color: #9b59b6;
+}
+
+#disk {
+}
+
+#backlight {
+    color: #e6e600;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+#network {
+    color: #56a5d9;
+}
+
+#network.disconnected {
+    border-color: #f53c3c;
+    color: #f53c3c;
+}
+
+#pulseaudio {
+    color: #f1c40f;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+#pulseaudio.muted {
+    border-color: #f53c3c;
+    color: #f53c3c;
+}
+
+#custom-media {
+    background-color: transparent;
+    padding: 0;
+    color: #2a5c45;
+    min-width: 100px;
+}
+
+#custom-media.custom-spotify {
+    background-color: alpha(#66cc99, 0.45);
+}
+
+#custom-media.custom-vlc {
+    background-color: alpha(#ffa000, 0.45);
+}
+
+#temperature {
+    background-color: alpha(#f0932b, 0.45);
+}
+
+#temperature.critical {
+    background-color: alpha(#eb4d4b, 0.45);
+}
+
+#tray {
+    color: #ffffff;
+
+    border: 1px solid #505055;
+    background-color: alpha(#404050, 0.45);
+    padding: 0 0.2rem;
+    margin: 4px 4px;
+    border-radius: 500rem;
+}
+
+#tray image {
+    padding: 0px;
+    margin: 0px 4px;
+    border: 1px solid transparent;
+    border-radius: 50%;
+
+    min-width: 28px;
+    min-height: 28px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: alpha(#eb4d4b, 0.45);
+}
+
+#tray .popup {
+    font-family: Ubuntu;
+}
+
+#custom-notification {
+    font-family: "FiraCode Nerd Font";
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+#idle_inhibitor {
+    color: #ecf0f1;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+}
+
+#idle_inhibitor.activated {
+    color: #fff;
+}
+
+#mpd {
+    color: #66cc99;
+}
+
+#mpd.disconnected {
+    color: #f53c3c;
+    border-color: #f53c3c;
+}
+
+#mpd.stopped {
+    color: #90b1b1;
+    border-color: #90b1b1;
+}
+
+#mpd.paused {
+    color: #51a37a;
+    border-color: #51a37a;
+}
+
+#language {
+    background-color: alpha(#00b093, 0.45);
+    color: #740864;
+    padding: 0 5px;
+    margin: 0 5px;
+    min-width: 16px;
+}
+
+#keyboard-state {
+    background-color: alpha(#97e1ad, 0.45);
+    color: #000000;
+    padding: 0 0px;
+    margin: 0 5px;
+    min-width: 16px;
+}
+
+#keyboard-state > label {
+    padding: 0 5px;
+}
+
+#keyboard-state > label.locked {
+    background: rgba(0, 0, 0, 0.2);
+}

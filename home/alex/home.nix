@@ -14,6 +14,8 @@ in lib.mkMerge [
     # Let Home Manager install and manage itself.
     programs.home-manager.enable = true;
 
+    imports = [ ../../modules/viture-socket-service.nix ];
+
     # This value determines the Home Manager release that your configuration is
     # compatible with. This helps avoid breakage when a new Home Manager release
     # introduces backwards incompatible changes.
@@ -142,7 +144,7 @@ in lib.mkMerge [
     programs.viture = {
       enable = true;
       tracking.mode = "flake";
-      flakeSrc = inputs.viturewayland;
+      flakeSrc = inputs.viture;
     };
   }
 ]

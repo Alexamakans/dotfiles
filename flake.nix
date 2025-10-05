@@ -8,8 +8,7 @@
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
 
-    # renamed: no hyphen
-    viturewayland.url = "github:Alexamakans/multimon-wayland/main";
+    viture.url = "github:Alexamakans/multimon-wayland/main";
   };
 
   outputs = { self, nixpkgs, home-manager, nix-flatpak, ... }@inputs:
@@ -36,7 +35,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
 
-              # pass inputs through so HM can access inputs.viturewayland
+              # pass inputs through so HM can access inputs.viture
               home-manager.extraSpecialArgs = { inherit inputs; };
 
               home-manager.users.${user} = import ./home/${user}/home.nix;

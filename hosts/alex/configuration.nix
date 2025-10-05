@@ -8,6 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ../../modules/flatpak.nix
     ];
 
   # Bootloader.
@@ -120,6 +121,16 @@
   # QOL env for Electron/Chromium apps on Wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
+  profile.flatpak = {
+    enable = true;
+    portalBackend = "wlr";
+    enableGtkPortal = true;
+  };
+
+  services.flatpak.packages = [
+    "com.spotify.Client"
+  ];
+
   environment.systemPackages = with pkgs; [
     home-manager
 
@@ -143,18 +154,21 @@
     brightnessctl
 
     btop-rocm # better htop
+
+    openssl
+    curl
   ];
 
   nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
     "1password"
     "1password-cli"
-    "spotify"
+    "discord"
   ];
 
   programs._1password.enable = true;
   programs._1password-gui.enable = true;
   programs._1password-gui.polkitPolicyOwners = [ "alex" ];
-
+  
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

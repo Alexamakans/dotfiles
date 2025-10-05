@@ -49,7 +49,7 @@ in
 
       shikane # Dynamic display output configuration
 
-      stow # symlink manager
+      discord
     ];
 
     # Home Manager can also manage your environment variables through
@@ -70,6 +70,7 @@ in
     #
     home.sessionVariables = {
       EDITOR = "nvim";
+      BROWSER = "qutebrowser";
     };
 
     home.file.".bashrc".source = dot + "/.bashrc";

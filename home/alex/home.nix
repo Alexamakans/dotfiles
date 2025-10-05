@@ -74,7 +74,10 @@ in lib.mkMerge [
       BROWSER = "qutebrowser";
     };
 
-    programs.bash = { initExtra = builtins.readFile "${dot}/.bashrc"; };
+    programs.bash = {
+      enable = true;
+      initExtra = builtins.readFile "${dot}/.bashrc";
+    };
 
     home.file.".gitconfig".source = dot + "/.gitconfig";
 

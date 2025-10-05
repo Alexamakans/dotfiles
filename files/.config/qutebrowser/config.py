@@ -43,7 +43,7 @@ c.url.searchengines = {
 # -----------------------------------------------------------------------------
 # Downloads
 # -----------------------------------------------------------------------------
-c.downloads.location.directory = "~/Downloads"
+c.downloads.location.directory = "~/downloads"
 c.downloads.location.prompt = False
 c.downloads.remove_finished = 30000  # ms
 

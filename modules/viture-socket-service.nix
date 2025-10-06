@@ -7,14 +7,25 @@ let
   viturectl = pkgs.writeShellScriptBin "viturectl" ''
     #!/usr/bin/env bash
     set -euo pipefail
+
     if [[ $# -lt 1 ]]; then
       echo "usage: viturectl <align|push|pop|zoom-in|zoom-out|shift-left|shift-right|toggle-center-dot>" >&2
       exit 1
     fi
-    exec ${pkgs.socat}/bin/socat - "UNIX-CONNECT:${
-      "$"
-    }{XDG_RUNTIME_DIR:-/tmp}/viture.sock" <<<"$1"
+
+    # Prefer XDG_RUNTIME_DIR; fall back to /run/user/$(id -u)
+    RUNDIR="''${XDG_RUNTIME_DIR:-/run/user/$(${pkgs.coreutils}/bin/id -u)}"
+    SOCK="''${RUNDIR}/viture.sock"
+
+    if [[ ! -S "''${SOCK}" ]]; then
+      echo "viturectl: socket not found: ''${SOCK}" >&2
+      exit 2
+    fi
+
+    # socat needs numeric type: SOCK_SEQPACKET == 5
+    exec ${pkgs.socat}/bin/socat - "UNIX-CONNECT:''${SOCK},type=5" <<<"$1"
   '';
+
 in {
   options.programs.viture = {
     enable = lib.mkEnableOption "Viture XR socket+service";
@@ -33,7 +44,7 @@ in {
     systemd.user.sockets.viture = {
       Unit.Description = "Viture command socket";
       Socket = {
-        ListenStream = "%t/viture.sock";
+        ListenSequentialPacket = "%t/viture.sock";
         SocketMode = "0600";
       };
       Install.WantedBy = [ "sockets.target" ];
@@ -49,9 +60,13 @@ in {
       Service = {
         ExecStart = "${viturePkg}/bin/viture_ar_desktop_wayland_dmabuf";
         Restart = "on-failure";
-        Environment = lib.concatStringsSep " " ([ "XDG_RUNTIME_DIR=%t" ]
-          ++ (lib.mapAttrsToList (n: v: "${n}=${lib.escapeShellArg v}")
-            config.programs.viture.serviceEnv));
+        RestartSec = 1;
+        Environment = lib.concatStringsSep " " ([
+          "XDG_RUNTIME_DIR=%t"
+          "WAYLAND_DISPLAY=wayland-1"
+          "GBM_DEVICE=/dev/dri/renderD128"
+        ] ++ (lib.mapAttrsToList (n: v: "${n}=${lib.escapeShellArg v}")
+          config.programs.viture.serviceEnv));
       };
       Install.WantedBy = [ "default.target" ];
     };

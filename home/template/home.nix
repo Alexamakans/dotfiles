@@ -5,7 +5,7 @@ let
   gobin = "${config.home.homeDirectory}/.local/bin";
   mkHomeFileRecursive = path: {
     home.file."${path}" = {
-      source = dot + "${path}";
+      source = dot + "/${path}";
       recursive = true;
     };
   };
@@ -100,7 +100,7 @@ in lib.mkMerge [
       + "/.config/qutebrowser/quickmarks";
   }
 
-  (mkHomeFileRecursive "/.config/kitty")
-  (mkHomeFileRecursive "/.config/hypr")
-  (mkHomeFileRecursive "/.config/nvim")
+  (mkHomeFileRecursive ".config/kitty")
+  (mkHomeFileRecursive ".config/hypr")
+  (mkHomeFileRecursive ".config/nvim")
 ]

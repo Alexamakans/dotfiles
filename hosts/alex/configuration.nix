@@ -40,12 +40,38 @@
     LC_TIME = "sv_SE.UTF-8";
   };
 
+  users.groups.plugdev = { };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.alex = {
     isNormalUser = true;
     description = "alex";
-    extraGroups = [ "networkmanager" "wheel" "video" "docker" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "video"
+      "docker"
+      "plugdev"
+      "dialout" # for viture mostly, but for ttyACM0 generally
+    ];
   };
+
+  services.udev.extraRules = ''
+    # Viture Pro XR — hidraw interfaces
+    SUBSYSTEM=="hidraw", KERNEL=="hidraw*", \
+      ATTRS{idVendor}=="35ca", ATTRS{idProduct}=="101d", \
+      MODE:="0660", GROUP:="plugdev", TAG+="uaccess", SYMLINK+="viture-%k"
+
+    # Viture Pro XR — USB interface (good to tag the parent too)
+    SUBSYSTEM=="usb", \
+      ATTR{idVendor}=="35ca", ATTR{idProduct}=="101d", \
+      MODE:="0660", GROUP:="plugdev", TAG+="uaccess"
+
+    # Viture Pro XR — CDC ACM (serial) interface
+    SUBSYSTEM=="tty", KERNEL=="ttyACM*", \
+      ATTRS{idVendor}=="35ca", ATTRS{idProduct}=="101d", \
+      MODE:="0660", GROUP:="dialout", TAG+="uaccess", SYMLINK+="viture-%k"
+  '';
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

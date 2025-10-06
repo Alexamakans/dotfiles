@@ -17,7 +17,7 @@
       pkgsFor = system:
         import nixpkgs {
           inherit system;
-          config = { allowUnfree = true; };
+          config = { allowUnfree = false; };
         };
 
       mkHost = { host, user, system ? defaultSystem }:
@@ -35,7 +35,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
 
-              # pass inputs through so HM can access inputs.viture
+              # pass flake inputs into HM modules
               home-manager.extraSpecialArgs = { inherit inputs; };
 
               home-manager.users.${user} = import ./home/${user}/home.nix;
@@ -43,12 +43,6 @@
           ];
         };
     in {
-      homeConfigurations.alex = home-manager.lib.homeManagerConfiguration {
-        pkgs = pkgsFor defaultSystem;
-        extraSpecialArgs = { inherit inputs; };
-        modules = [ ./home.nix ];
-      };
-
       nixosConfigurations = {
         alex = mkHost {
           host = "alex";

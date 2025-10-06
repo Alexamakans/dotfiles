@@ -56,7 +56,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end,
 })
 
-require("mason").setup({})
+require("mason").setup({
+    PATH = "skip",
+})
 local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 --local vue_ls_path = vim.fn.expand(
@@ -84,6 +86,7 @@ local lsp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 --local vue_ls_config = {}
 require("mason-lspconfig").setup({
     ensure_installed = { "lua_ls" },
+    automatic_installation = false,
     handlers = {
         -- default for any server you didn't special-case
         function(server_name)
@@ -96,7 +99,10 @@ require("mason-lspconfig").setup({
 --vim.lsp.config('vue_ls', vue_ls_config)
 --vim.lsp.enable({ 'vtsls', 'vue_ls' })
 
-
+local lspconfig = require("lspconfig")
+lspconfig.clangd.setup({
+  cmd = { vim.fn.exepath("clangd"), "--background-index", "--clang-tidy" },
+})
 
 require("lsp_signature").setup({
     close_timeout = 2000,

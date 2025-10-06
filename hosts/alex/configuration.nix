@@ -71,6 +71,14 @@
     SUBSYSTEM=="tty", KERNEL=="ttyACM*", \
       ATTRS{idVendor}=="35ca", ATTRS{idProduct}=="101d", \
       MODE:="0660", GROUP:="dialout", TAG+="uaccess", SYMLINK+="viture-%k"
+
+    # Viture Pro XR connect
+    ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="35ca", ATTR{idProduct}=="101d", \
+      TAG+="systemd", ENV{SYSTEMD_USER_WANTS}+="hypr-headless@add.service"
+
+    # Viture Pro XR disconnect
+    ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_VENDOR_ID}=="35ca", ENV{ID_MODEL_ID}=="101d", \
+      TAG+="systemd", ENV{SYSTEMD_USER_WANTS}+="hypr-headless@remove.service"
   '';
 
   # Some programs need SUID wrappers, can be configured further or are

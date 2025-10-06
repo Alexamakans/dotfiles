@@ -26,6 +26,8 @@ in lib.mkMerge [
     # The home.packages option allows you to install Nix packages into your
     # environment.
     home.packages = with pkgs; [
+      nixfmt
+
       git
       gitleaks
 
@@ -100,7 +102,9 @@ in lib.mkMerge [
       + "/.config/qutebrowser/quickmarks";
   }
 
-  (mkHomeFileRecursive ".config/kitty")
   (mkHomeFileRecursive ".config/hypr")
+  (mkHomeFileRecursive ".config/waybar")
+  (mkHomeFileRecursive ".config/shikane")
+  (mkHomeFileRecursive ".config/kitty")
   (mkHomeFileRecursive ".config/nvim")
 ]

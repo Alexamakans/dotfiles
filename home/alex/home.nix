@@ -14,7 +14,7 @@ let
   };
 in {
   # ← module-level field (NOT merged)
-  imports = [ ../../modules/viture-socket-service.nix ];
+  imports = [ ../../modules/viture-socket-service.nix ../../modules/viture-dynamic-display.nix ];
 
   # ← everything you previously had in lib.mkMerge goes under config =
   config = lib.mkMerge [
@@ -23,6 +23,7 @@ in {
       home.stateVersion = "25.05";
 
       home.packages = with pkgs; [
+        nixfmt
         git
         gitleaks
         neovim
@@ -37,7 +38,7 @@ in {
         editorconfig-core-c
         python3
         qutebrowser
-        shikane
+        shikane # Dynamic display output configuration
         discord
         zoxide
         gdb
@@ -96,10 +97,29 @@ in {
       };
 
       programs.viture = { enable = true; };
+
+      programs.vituredynamicdisplay = {
+        enable = true;
+        vendorId = "35ca";
+        productId = "101d";
+        laptopOutput = "eDP-1";
+        headlessNames = [ "headless-1" "headless-2" "headless-3" ];
+        headlessWorkspaces = [ 1 2 3 ];
+        laptopWorkspace = 4;
+        renameWorkspaces = true;
+        workspaceNames = {
+          "1" = "AV";
+          "2" = "Main";
+          "3" = "Docs";
+          "4" = "Laptop";
+        };
+      };
     }
 
-    (mkHomeFileRecursive "/.config/kitty")
-    (mkHomeFileRecursive "/.config/hypr")
-    (mkHomeFileRecursive "/.config/nvim")
+    (mkHomeFileRecursive ".config/hypr")
+    (mkHomeFileRecursive ".config/waybar")
+    (mkHomeFileRecursive ".config/shikane")
+    (mkHomeFileRecursive ".config/kitty")
+    (mkHomeFileRecursive ".config/nvim")
   ];
 }

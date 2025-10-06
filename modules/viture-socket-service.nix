@@ -55,20 +55,27 @@ in {
       Unit = {
         Description = "Viture XR service";
         After = [ "viture.socket" ];
-        Requires = [ "viture.socket" ];
+        # Requiring can activate the service unexpectedly, and we don't want that
+        # Requires = [ "viture.socket" ];
       };
       Service = {
+        Type = "simple";
         ExecStart = "${viturePkg}/bin/viture_ar_desktop_wayland_dmabuf";
+        ExecStop = "${pkgs.coreutils}/bin/kill -s INT $MAINPID";
+        TimeoutStopSec = 1;
+        KillMode = "control-group";
+        SendSIGKILL = true;
         Restart = "on-failure";
         RestartSec = 1;
         Environment = lib.concatStringsSep " " ([
           "XDG_RUNTIME_DIR=%t"
-          "WAYLAND_DISPLAY=wayland-1"
+          # "WAYLAND_DISPLAY=wayland-1"
           "GBM_DEVICE=/dev/dri/renderD128"
         ] ++ (lib.mapAttrsToList (n: v: "${n}=${lib.escapeShellArg v}")
           config.programs.viture.serviceEnv));
       };
-      Install.WantedBy = [ "default.target" ];
+      # Don't auto launch
+      # Install.WantedBy = [ "default.target" ];
     };
   };
 }

@@ -88,6 +88,11 @@ in lib.mkMerge [
     };
 
     programs.bash = { initExtra = builtins.readFile "${dot}/.bashrc"; };
+    programs.waybar = {
+      enable = true;
+      settings = import ../../files/.config/waybar/config.nix;
+      style = ../../files/.config/waybar/style.css;
+    };
 
     home.file.".gitconfig".source = dot + "/.gitconfig";
 

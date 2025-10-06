@@ -50,9 +50,12 @@
       "networkmanager"
       "wheel"
       "video"
-      "docker"
+      "input"
+
       "plugdev"
       "dialout" # for viture mostly, but for ttyACM0 generally
+
+      "docker"
     ];
   };
 
@@ -74,11 +77,11 @@
 
     # Viture Pro XR connect
     ACTION=="add", SUBSYSTEM=="usb", ATTR{idVendor}=="35ca", ATTR{idProduct}=="101d", \
-      TAG+="systemd", ENV{SYSTEMD_USER_WANTS}+="hypr-headless@add.service"
+      TAG+="systemd", ENV{SYSTEMD_USER_WANTS}+="vituredynamicdisplay@add.service"
 
     # Viture Pro XR disconnect
     ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_VENDOR_ID}=="35ca", ENV{ID_MODEL_ID}=="101d", \
-      TAG+="systemd", ENV{SYSTEMD_USER_WANTS}+="hypr-headless@remove.service"
+      TAG+="systemd", ENV{SYSTEMD_USER_WANTS}+="vituredynamicdisplay@remove.service"
   '';
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -156,7 +159,6 @@
     hyprlock
     hyprshot
 
-    waybar
     rofi-wayland
     kitty
 

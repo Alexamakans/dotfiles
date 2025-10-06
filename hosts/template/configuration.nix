@@ -122,7 +122,6 @@
     hyprlock
     hyprshot
 
-    waybar
     rofi-wayland
     kitty
 

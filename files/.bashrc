@@ -1,7 +1,7 @@
 export DOTFILES=$HOME/code/github.com/Alexamakans/dotfiles
 
 alias ns="sudo nixos-rebuild switch --flake ~/dotfiles#$(hostname) --option experimental-features 'nix-command flakes'"
-alias dots="cd ~/dotfiles/files"
+alias dots="cd ~/dotfiles"
 
 # git aliases
 

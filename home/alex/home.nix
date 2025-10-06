@@ -14,7 +14,10 @@ let
   };
 in {
   # ← module-level field (NOT merged)
-  imports = [ ../../modules/viture-socket-service.nix ../../modules/viture-dynamic-display.nix ];
+  imports = [
+    ../../modules/viture-socket-service.nix
+    ../../modules/viture-dynamic-display.nix
+  ];
 
   # ← everything you previously had in lib.mkMerge goes under config =
   config = lib.mkMerge [
@@ -63,6 +66,12 @@ in {
         initExtra = builtins.readFile "${dot}/.bashrc";
       };
 
+      programs.waybar = {
+        enable = true;
+        settings = import ../../files/.config/waybar/config.nix;
+        style = ../../files/.config/waybar/style.css;
+      };
+
       home.file.".gitconfig".source = dot + "/.gitconfig";
 
       xdg.configFile."qutebrowser/config.py".source = dot
@@ -108,10 +117,10 @@ in {
         laptopWorkspace = 4;
         renameWorkspaces = true;
         workspaceNames = {
-          "1" = "AV";
-          "2" = "Main";
-          "3" = "Docs";
-          "4" = "Laptop";
+          "1" = "1-AV";
+          "2" = "2-Main";
+          "3" = "3-Docs";
+          "4" = "4-Laptop";
         };
       };
     }

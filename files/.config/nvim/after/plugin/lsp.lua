@@ -99,10 +99,7 @@ require("mason-lspconfig").setup({
 --vim.lsp.config('vue_ls', vue_ls_config)
 --vim.lsp.enable({ 'vtsls', 'vue_ls' })
 
-local lspconfig = require("lspconfig")
-lspconfig.clangd.setup({
-  cmd = { vim.fn.exepath("clangd"), "--background-index", "--clang-tidy" },
-})
+vim.lsp.enable("clangd")
 
 require("lsp_signature").setup({
     close_timeout = 2000,

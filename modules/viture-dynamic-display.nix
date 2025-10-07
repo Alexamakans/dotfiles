@@ -62,6 +62,7 @@
         h = builtins.elemAt cfg.headlessNames i;
       in ''
         hyprctl dispatch moveworkspacetomonitor ${toString ws} "${h}";
+        sleep 0.5;
       '') (lib.range 0 (builtins.length cfg.headlessWorkspaces - 1))
     }
       hyprctl dispatch moveworkspacetomonitor ${

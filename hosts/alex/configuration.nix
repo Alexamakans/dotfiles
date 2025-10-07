@@ -189,8 +189,10 @@
   programs.hyprland = {
     enable = true;
     withUWSM = true;
-    # xwayland.enable = true;
-    xwayland.enable = false;
+    # Programs that need xwayland.enable = true;
+    # - 1password
+    xwayland.enable = true;
+    #xwayland.enable = false;
   };
 
   nixpkgs.config.allowUnfreePredicate = pkg:

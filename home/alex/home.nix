@@ -142,20 +142,21 @@ in {
         laptopOutput = "eDP-1";
         headlessNames = ["headless-1" "headless-2" "headless-3"];
         headlessWorkspaces = [1 2 3];
-        laptopWorkspace = 4;
+        laptopWorkspace = 1;
         renameWorkspaces = true;
         workspaceNames = {
-          "1" = "1-AV";
-          "2" = "2-Main";
-          "3" = "3-Docs";
-          "4" = "4-Laptop";
+          "1" = "1-Laptop";
+          "2" = "2-Docs";
+          "3" = "3-Main";
+          "4" = "4-AV";
         };
       };
     }
 
     {
       home.file.".config/hypr/conf.d/viture.conf".text = ''
-        windowrulev2 = fullscreen, class:^(viture_ar_desktop_wayland_dmabuf)$
+        windowrulev2 = fullscreen, title:^(Viture AR \(Wayland DMA-BUF\))$
+        windowrulev2 = fullscreen, initialtitle:^(Viture AR \(Wayland DMA-BUF\))$
       '';
     }
 

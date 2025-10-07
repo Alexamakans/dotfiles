@@ -14,7 +14,7 @@
     # Hyprland
     "hyprland/workspaces" = {
       format = "{name}";
-      persistent-workspaces = {"*" = ["1-AV" "2-Main" "3-Docs" "4-Laptop"];};
+      persistent-workspaces = {"*" = ["1-Laptop" "2-Docs" "3-Main" "4-AV"];};
       persistent-only = true; # show only the persistent ones
       show-special = false; # hide special workspaces
       all-outputs = false; # (optional) only show for the current output

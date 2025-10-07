@@ -17,6 +17,10 @@ in {
   imports = [
     ../../modules/viture-socket-service.nix
     ../../modules/viture-dynamic-display.nix
+
+    # For internyet 2025
+    # ../../modules/go-offline.nix
+    # ../../modules/pip-offline.nix
   ];
 
   # ← everything you previously had in lib.mkMerge goes under config =

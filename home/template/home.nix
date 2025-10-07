@@ -1,6 +1,9 @@
-{ config, pkgs, lib, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   dot = __DOT__;
   gobin = "${config.home.homeDirectory}/.local/bin";
   mkHomeFileRecursive = path: {
@@ -9,115 +12,118 @@ let
       recursive = true;
     };
   };
-in lib.mkMerge [
-  {
-    # Let Home Manager install and manage itself.
-    programs.home-manager.enable = true;
+in
+  lib.mkMerge [
+    {
+      # Let Home Manager install and manage itself.
+      programs.home-manager.enable = true;
 
-    # This value determines the Home Manager release that your configuration is
-    # compatible with. This helps avoid breakage when a new Home Manager release
-    # introduces backwards incompatible changes.
-    #
-    # You should not change this value, even if you update Home Manager. If you do
-    # want to update the value, then make sure to first check the Home Manager
-    # release notes.
-    home.stateVersion = "25.05"; # Please read the comment before changing.
+      # This value determines the Home Manager release that your configuration is
+      # compatible with. This helps avoid breakage when a new Home Manager release
+      # introduces backwards incompatible changes.
+      #
+      # You should not change this value, even if you update Home Manager. If you do
+      # want to update the value, then make sure to first check the Home Manager
+      # release notes.
+      home.stateVersion = "25.05"; # Please read the comment before changing.
 
-    # The home.packages option allows you to install Nix packages into your
-    # environment.
-    home.packages = with pkgs; [
-      git
-      gitleaks
+      # The home.packages option allows you to install Nix packages into your
+      # environment.
+      home.packages = with pkgs; [
+        git
+        gitleaks
 
-      neovim
-      ripgrep
-      fzf # fuzzy finder
+        neovim
+        ripgrep
+        fzf # fuzzy finder
 
-      jq
-      yq-go
-      dig
+        jq
+        yq-go
+        dig
 
-      zip
-      unzip
+        zip
+        unzip
 
-      gcc
-      editorconfig-core-c
+        gcc
+        editorconfig-core-c
 
-      python3
+        python3
 
-      qutebrowser # keyboard-first browser
+        qutebrowser # keyboard-first browser
 
-      shikane # Dynamic display output configuration
+        shikane # Dynamic display output configuration
 
-      discord
+        discord
 
-      # golang development
-      go
-      gopls
+        # golang development
+        go
+        gopls
 
-      # c/c++ develeopment
-      cmake
-      pkg-config
+        # c/c++ develeopment
+        cmake
+        pkg-config
 
-      # formatting tools/pre-commit
-      alejandra # nix
-      shfmt
-      shellcheck
-      taplo # toml
-      stylua # lua
-      luaPackages.luacheck
-      pre-commit
-    ];
+        # formatting tools/pre-commit
+        alejandra # nix
+        shfmt
+        shellcheck
+        taplo # toml
+        stylua # lua
+        luaPackages.luacheck
+        pre-commit
+      ];
 
-    # Home Manager can also manage your environment variables through
-    # 'home.sessionVariables'. These will be explicitly sourced when using a
-    # shell provided by Home Manager. If you don't want to manage your shell
-    # through Home Manager then you have to manually source 'hm-session-vars.sh'
-    # located at either
-    #
-    #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-    #
-    # or
-    #
-    #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
-    #
-    # or
-    #
-    #  /etc/profiles/per-user/alex/etc/profile.d/hm-session-vars.sh
-    #
+      # Home Manager can also manage your environment variables through
+      # 'home.sessionVariables'. These will be explicitly sourced when using a
+      # shell provided by Home Manager. If you don't want to manage your shell
+      # through Home Manager then you have to manually source 'hm-session-vars.sh'
+      # located at either
+      #
+      #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
+      #
+      # or
+      #
+      #  ~/.local/state/nix/profiles/profile/etc/profile.d/hm-session-vars.sh
+      #
+      # or
+      #
+      #  /etc/profiles/per-user/alex/etc/profile.d/hm-session-vars.sh
+      #
 
-    home.sessionPath = [ gobin ];
+      home.sessionPath = [gobin];
 
-    home.sessionVariables = {
-      EDITOR = "nvim";
-      BROWSER = "qutebrowser";
-      GOBIN = gobin;
-    };
+      home.sessionVariables = {
+        EDITOR = "nvim";
+        BROWSER = "qutebrowser";
+        GOBIN = gobin;
+      };
 
-    programs.bash = { initExtra = builtins.readFile "${dot}/.bashrc"; };
-    programs.waybar = {
-      enable = true;
-      settings = import ../../files/.config/waybar/config.nix;
-      style = ../../files/.config/waybar/style.css;
-    };
+      programs.bash = {initExtra = builtins.readFile "${dot}/.bashrc";};
+      programs.waybar = {
+        enable = true;
+        settings = import ../../files/.config/waybar/config.nix;
+        style = ../../files/.config/waybar/style.css;
+      };
 
-    home.file.".gitconfig".source = dot + "/.gitconfig";
-    home.file.".gitconfig-ssh".source = dot + "/.gitconfig-ssh";
+      home.file.".gitconfig".source = dot + "/.gitconfig";
+      home.file.".gitconfig-ssh".source = dot + "/.gitconfig-ssh";
 
-    # qutebrowser:
-    #   Manage specifics like config.py and quickmarks.
-    #   Don't manage autoconfig.yml (qutebrowser rewrites it)
-    #   In config.py, use:
-    #     config.load_autoconfig(False)
-    xdg.configFile."qutebrowser/config.py".source = dot
-      + "/.config/qutebrowser/config.py";
-    xdg.configFile."qutebrowser/quickmarks".source = dot
-      + "/.config/qutebrowser/quickmarks";
-  }
+      # qutebrowser:
+      #   Manage specifics like config.py and quickmarks.
+      #   Don't manage autoconfig.yml (qutebrowser rewrites it)
+      #   In config.py, use:
+      #     config.load_autoconfig(False)
+      xdg.configFile."qutebrowser/config.py".source =
+        dot
+        + "/.config/qutebrowser/config.py";
+      xdg.configFile."qutebrowser/quickmarks".source =
+        dot
+        + "/.config/qutebrowser/quickmarks";
+    }
 
-  (mkHomeFileRecursive ".config/hypr")
-  (mkHomeFileRecursive ".config/waybar")
-  (mkHomeFileRecursive ".config/shikane")
-  (mkHomeFileRecursive ".config/kitty")
-  (mkHomeFileRecursive ".config/nvim")
-]
+    (mkHomeFileRecursive ".config/hypr")
+    (mkHomeFileRecursive ".config/waybar")
+    (mkHomeFileRecursive ".config/shikane")
+    (mkHomeFileRecursive ".config/kitty")
+    (mkHomeFileRecursive ".config/nvim")
+  ]

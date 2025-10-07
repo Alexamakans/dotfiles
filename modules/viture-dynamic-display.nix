@@ -1,17 +1,27 @@
-{ config, lib, pkgs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.programs.vituredynamicdisplay;
-  inherit (lib)
-    mkEnableOption mkOption mkIf types concatStringsSep optionalString;
+  inherit
+    (lib)
+    mkEnableOption
+    mkOption
+    mkIf
+    types
+    concatStringsSep
+    optionalString
+    ;
 
   # Helper: turn an attrset of workspace->name into a hyprctl batch
-  mkRenameBatch = names:
-    let
-      lines =
-        lib.mapAttrsToList (ws: nm: "dispatch renameworkspace ${ws} ${nm};")
-        names;
-    in concatStringsSep " " lines;
+  mkRenameBatch = names: let
+    lines =
+      lib.mapAttrsToList (ws: nm: "dispatch renameworkspace ${ws} ${nm};")
+      names;
+  in
+    concatStringsSep " " lines;
 
   # Common shell used by add/remove
   scriptCommon = pkgs.writeShellScript "vituredynamicdisplay-common" ''
@@ -47,25 +57,24 @@ let
     map_to_headless() {
       # Workspaces and headless names must have same length for the headless side.
       ${
-        lib.concatMapStrings (i:
-          let
-            ws = builtins.elemAt cfg.headlessWorkspaces i;
-            h = builtins.elemAt cfg.headlessNames i;
-          in ''
-            hyprctl dispatch moveworkspacetomonitor ${toString ws} "${h}";
-          '') (lib.range 0 (builtins.length cfg.headlessWorkspaces - 1))
-      }
+      lib.concatMapStrings (i: let
+        ws = builtins.elemAt cfg.headlessWorkspaces i;
+        h = builtins.elemAt cfg.headlessNames i;
+      in ''
+        hyprctl dispatch moveworkspacetomonitor ${toString ws} "${h}";
+      '') (lib.range 0 (builtins.length cfg.headlessWorkspaces - 1))
+    }
       hyprctl dispatch moveworkspacetomonitor ${
-        toString cfg.laptopWorkspace
-      } "$LAPTOP"
+      toString cfg.laptopWorkspace
+    } "$LAPTOP"
     }
 
     map_all_to_laptop() {
       ${
-        concatStringsSep "\n" (map (w: ''
-          hyprctl dispatch moveworkspacetomonitor ${toString w} "$LAPTOP"
-        '') (cfg.headlessWorkspaces ++ [ cfg.laptopWorkspace ]))
-      }
+      concatStringsSep "\n" (map (w: ''
+        hyprctl dispatch moveworkspacetomonitor ${toString w} "$LAPTOP"
+      '') (cfg.headlessWorkspaces ++ [cfg.laptopWorkspace]))
+    }
     }
 
     wait_for_outputs() {
@@ -82,17 +91,16 @@ let
       # try a few times to beat any post-hotplug reshuffle
       for _ in $(seq 1 5); do
         ${
-          lib.concatMapStrings (i:
-            let
-              ws = builtins.elemAt cfg.headlessWorkspaces i;
-              h = builtins.elemAt cfg.headlessNames i;
-            in ''
-              hyprctl dispatch moveworkspacetomonitor ${toString ws} "${h}";'')
-          (lib.range 0 (builtins.length cfg.headlessWorkspaces - 1))
-        }
+      lib.concatMapStrings (i: let
+        ws = builtins.elemAt cfg.headlessWorkspaces i;
+        h = builtins.elemAt cfg.headlessNames i;
+      in ''
+        hyprctl dispatch moveworkspacetomonitor ${toString ws} "${h}";'')
+      (lib.range 0 (builtins.length cfg.headlessWorkspaces - 1))
+    }
         hyprctl dispatch moveworkspacetomonitor ${
-          toString cfg.laptopWorkspace
-        } "$LAPTOP"
+      toString cfg.laptopWorkspace
+    } "$LAPTOP"
         sleep 0.05
       done
     }
@@ -100,10 +108,10 @@ let
 
     rename_workspaces() {
       ${
-        optionalString cfg.renameWorkspaces ''
-          hyprctl --batch "${mkRenameBatch cfg.workspaceNames}"
-        ''
-      }
+      optionalString cfg.renameWorkspaces ''
+        hyprctl --batch "${mkRenameBatch cfg.workspaceNames}"
+      ''
+    }
     }
   '';
 
@@ -209,7 +217,8 @@ let
   '';
 in {
   options.programs.vituredynamicdisplay = {
-    enable = mkEnableOption
+    enable =
+      mkEnableOption
       "USB-driven headless outputs + workspace mapping for Hyprland (user-space)";
 
     vendorId = mkOption {
@@ -232,15 +241,14 @@ in {
 
     headlessNames = mkOption {
       type = types.listOf types.str;
-      default = [ "headless-1" "headless-2" "headless-3" ];
+      default = ["headless-1" "headless-2" "headless-3"];
       description = "Names for Hyprland headless outputs to create/remove.";
     };
 
     headlessWorkspaces = mkOption {
       type = types.listOf types.int;
-      default = [ 1 2 3 ];
-      description =
-        "Workspace numbers to pin to the headless outputs (paired by index with headlessNames).";
+      default = [1 2 3];
+      description = "Workspace numbers to pin to the headless outputs (paired by index with headlessNames).";
     };
 
     laptopWorkspace = mkOption {
@@ -263,22 +271,20 @@ in {
         "3" = "Headless-C";
         "4" = "Laptop";
       };
-      description =
-        "Names to assign to workspaces (keys are workspace numbers as strings).";
+      description = "Names to assign to workspaces (keys are workspace numbers as strings).";
     };
   };
 
   config = mkIf cfg.enable {
     # tools used by the scripts
-    home.packages = [ pkgs.jq pkgs.coreutils pkgs.systemd pkgs.gawk ];
+    home.packages = [pkgs.jq pkgs.coreutils pkgs.systemd pkgs.gawk];
 
     # Long-running user-space watcher (no root, no udev rules)
     systemd.user.services.vituredynamicdisplay-monitor = {
       Unit = {
-        Description =
-          "Monitor USB ${cfg.vendorId}:${cfg.productId} and toggle Hyprland headless mode";
-        PartOf = [ "graphical-session.target" ];
-        After = [ "graphical-session.target" ];
+        Description = "Monitor USB ${cfg.vendorId}:${cfg.productId} and toggle Hyprland headless mode";
+        PartOf = ["graphical-session.target"];
+        After = ["graphical-session.target"];
       };
       Service = {
         ExecStart = "${scriptMonitor}";
@@ -288,7 +294,7 @@ in {
         # The file is written by an exec-once in %t/hypr/hyprland.conf
         EnvironmentFile = "%t/hypr/hyprland.env";
       };
-      Install = { WantedBy = [ "graphical-session.target" ]; };
+      Install = {WantedBy = ["graphical-session.target"];};
     };
 
     # Convenience oneshot units so you can trigger manually if you want:
@@ -298,7 +304,7 @@ in {
         Type = "oneshot";
         ExecStart = "${scriptAdd}";
       };
-      Install.WantedBy = [ "default.target" ];
+      Install.WantedBy = ["default.target"];
     };
     systemd.user.services.vituredynamicdisplay-remove = {
       Unit.Description = "Force-disable headless outputs and mapping";
@@ -306,7 +312,7 @@ in {
         Type = "oneshot";
         ExecStart = "${scriptRemove}";
       };
-      Install.WantedBy = [ "default.target" ];
+      Install.WantedBy = ["default.target"];
     };
   };
 }

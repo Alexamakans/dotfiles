@@ -4,7 +4,9 @@
 
 [init]
   defaultBranch = main
+
 [includeIf "gitdir:~/dotfiles/"]
-	path = /home/alex/.gitconfig-ssh
+  path = /home/alex/.gitconfig-ssh
+
 [includeIf "gitdir:~/code/"]
 	path = /home/alex/.gitconfig-ssh

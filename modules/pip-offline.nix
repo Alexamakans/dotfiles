@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }:
-let
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
   cfg = config.programs.pipOffline;
   defaultWheelhouse = "${config.home.homeDirectory}/wheelhouse";
 in {
@@ -8,14 +12,12 @@ in {
     wheelhousePath = mkOption {
       type = types.path;
       default = defaultWheelhouse;
-      description =
-        "Directory containing pre-downloaded wheels (your 'wheelhouse').";
+      description = "Directory containing pre-downloaded wheels (your 'wheelhouse').";
     };
     extraFindLinks = mkOption {
       type = with types; listOf path;
-      default = [ ];
-      description =
-        "Optional additional local directories to search for wheels.";
+      default = [];
+      description = "Optional additional local directories to search for wheels.";
     };
     writePipConf = mkOption {
       type = types.bool;
@@ -28,8 +30,9 @@ in {
     # Environment variables (work even if pip.conf isn't written)
     home.sessionVariables = {
       PIP_NO_INDEX = "1";
-      PIP_FIND_LINKS = lib.concatStringsSep " "
-        ([ (toString cfg.wheelhousePath) ] ++ map toString cfg.extraFindLinks);
+      PIP_FIND_LINKS =
+        lib.concatStringsSep " "
+        ([(toString cfg.wheelhousePath)] ++ map toString cfg.extraFindLinks);
     };
 
     # Optional pip.conf to make it the default for all shells and tools
@@ -38,7 +41,7 @@ in {
         [global]
         no-index = true
         find-links = ${toString cfg.wheelhousePath}${
-          lib.optionalString (cfg.extraFindLinks != [ ]) ("\n"
+          lib.optionalString (cfg.extraFindLinks != []) ("\n"
             + lib.concatStringsSep "\n"
             (map (p: "find-links = " + toString p) cfg.extraFindLinks))
         }

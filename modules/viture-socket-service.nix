@@ -1,6 +1,10 @@
-{ config, lib, pkgs, inputs, ... }:
-
-let
+{
+  config,
+  lib,
+  pkgs,
+  inputs,
+  ...
+}: let
   # Use the packaged app from your project input
   viturePkg = inputs.viture.packages.${pkgs.system}.default;
 
@@ -25,20 +29,19 @@ let
     # socat needs numeric type: SOCK_SEQPACKET == 5
     exec ${pkgs.socat}/bin/socat - "UNIX-CONNECT:''${SOCK},type=5" <<<"$1"
   '';
-
 in {
   options.programs.viture = {
     enable = lib.mkEnableOption "Viture XR socket+service";
     serviceEnv = lib.mkOption {
       type = lib.types.attrsOf lib.types.str;
-      default = { };
+      default = {};
       description = "Extra env for the viture user service.";
     };
   };
 
   config = lib.mkIf config.programs.viture.enable {
     # Only the runtime bits you might want in your user profile
-    home.packages = [ viturePkg viturectl pkgs.socat ];
+    home.packages = [viturePkg viturectl pkgs.socat];
 
     # Socket activation in the user session
     systemd.user.sockets.viture = {
@@ -47,14 +50,14 @@ in {
         ListenSequentialPacket = "%t/viture.sock";
         SocketMode = "0600";
       };
-      Install.WantedBy = [ "sockets.target" ];
+      Install.WantedBy = ["sockets.target"];
     };
 
     # Service: starts on first viturectl, or manually
     systemd.user.services.viture = {
       Unit = {
         Description = "Viture XR service";
-        After = [ "viture.socket" ];
+        After = ["viture.socket"];
         # Requiring can activate the service unexpectedly, and we don't want that
         # Requires = [ "viture.socket" ];
       };
@@ -68,11 +71,12 @@ in {
         Restart = "on-failure";
         RestartSec = 1;
         Environment = lib.concatStringsSep " " ([
-          "XDG_RUNTIME_DIR=%t"
-          # "WAYLAND_DISPLAY=wayland-1"
-          "GBM_DEVICE=/dev/dri/renderD128"
-        ] ++ (lib.mapAttrsToList (n: v: "${n}=${lib.escapeShellArg v}")
-          config.programs.viture.serviceEnv));
+            "XDG_RUNTIME_DIR=%t"
+            # "WAYLAND_DISPLAY=wayland-1"
+            "GBM_DEVICE=/dev/dri/renderD128"
+          ]
+          ++ (lib.mapAttrsToList (n: v: "${n}=${lib.escapeShellArg v}")
+            config.programs.viture.serviceEnv));
       };
       # Don't auto launch
       # Install.WantedBy = [ "default.target" ];

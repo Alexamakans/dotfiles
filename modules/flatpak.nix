@@ -1,6 +1,9 @@
-{ lib, pkgs, config, ... }:
-
-let
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}: let
   inherit (lib) mkIf mkOption mkEnableOption types optional;
   cfg = config.profile.flatpak;
 in {
@@ -8,7 +11,7 @@ in {
     enable = mkEnableOption "Flatpak with Flathub and xdg-desktop-portals";
 
     portalBackend = mkOption {
-      type = types.enum [ "wlr" "gnome" "kde" ];
+      type = types.enum ["wlr" "gnome" "kde"];
       default = "wlr";
       description = "xdg-desktop-portal backend to use.";
     };
@@ -30,10 +33,12 @@ in {
   config = mkIf cfg.enable {
     services.flatpak.enable = true;
 
-    services.flatpak.remotes = mkIf cfg.enableFlathub [{
-      name = "flathub";
-      location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
-    }];
+    services.flatpak.remotes = mkIf cfg.enableFlathub [
+      {
+        name = "flathub";
+        location = "https://dl.flathub.org/repo/flathub.flatpakrepo";
+      }
+    ];
 
     xdg.portal.enable = true;
     xdg.portal.extraPortals =
@@ -42,7 +47,7 @@ in {
       ++ (optional (cfg.portalBackend == "kde") pkgs.xdg-desktop-portal-kde)
       ++ (optional cfg.enableGtkPortal pkgs.xdg-desktop-portal-gtk);
 
-    environment.systemPackages = [ pkgs.flatpak ];
+    environment.systemPackages = [pkgs.flatpak];
 
     security.polkit.enable = lib.mkDefault true;
   };

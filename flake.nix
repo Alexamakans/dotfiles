@@ -11,44 +11,53 @@
     viture.url = "github:Alexamakans/multimon-wayland/main";
   };
 
-  outputs = { self, nixpkgs, home-manager, nix-flatpak, ... }@inputs:
-    let
-      defaultSystem = "x86_64-linux";
-      pkgsFor = system:
-        import nixpkgs {
-          inherit system;
-          config = { allowUnfree = false; };
-        };
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    nix-flatpak,
+    ...
+  } @ inputs: let
+    defaultSystem = "x86_64-linux";
+    pkgsFor = system:
+      import nixpkgs {
+        inherit system;
+        config = {allowUnfree = false;};
+      };
 
-      mkHost = { host, user, system ? defaultSystem }:
-        nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            ./hosts/${host}/configuration.nix
-            nix-flatpak.nixosModules.nix-flatpak
-            ({ ... }: {
-              nix.settings.experimental-features = [ "nix-command" "flakes" ];
-            })
+    mkHost = {
+      host,
+      user,
+      system ? defaultSystem,
+    }:
+      nixpkgs.lib.nixosSystem {
+        inherit system;
+        modules = [
+          ./hosts/${host}/configuration.nix
+          nix-flatpak.nixosModules.nix-flatpak
+          ({...}: {
+            nix.settings.experimental-features = ["nix-command" "flakes"];
+          })
 
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
 
-              # pass flake inputs into HM modules
-              home-manager.extraSpecialArgs = { inherit inputs; };
+            # pass flake inputs into HM modules
+            home-manager.extraSpecialArgs = {inherit inputs;};
 
-              home-manager.users.${user} = import ./home/${user}/home.nix;
-            }
-          ];
-        };
-    in {
-      nixosConfigurations = {
-        alex = mkHost {
-          host = "alex";
-          user = "alex";
-          system = defaultSystem;
-        };
+            home-manager.users.${user} = import ./home/${user}/home.nix;
+          }
+        ];
+      };
+  in {
+    nixosConfigurations = {
+      alex = mkHost {
+        host = "alex";
+        user = "alex";
+        system = defaultSystem;
       };
     };
+  };
 }

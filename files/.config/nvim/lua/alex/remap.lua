@@ -24,7 +24,7 @@ vim.keymap.set("i", "<C-c>", "<Esc>")
 vim.keymap.set("n", "Q", "<nop>")
 -- vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 vim.keymap.set("n", "<leader>f", function()
-	vim.lsp.buf.format({ timeout_ms = 5000 })
+  vim.lsp.buf.format({ timeout_ms = 5000 })
 end)
 
 vim.keymap.set("n", "<leader>s", ":%s/\\<<C-r><C-w>\\>/<C-r><C-w>/gI<Left><Left><Left>")
@@ -33,8 +33,8 @@ vim.keymap.set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { silent = true })
 
 -- Copy relative path of current buffer to clipboard
 vim.keymap.set("n", "<leader>cp", function()
-	vim.fn.setreg("+", vim.fn.expand("%:p"))
-	vim.fn.setreg("", vim.fn.expand("%:p"))
+  vim.fn.setreg("+", vim.fn.expand("%:p"))
+  vim.fn.setreg("", vim.fn.expand("%:p"))
 end)
 
 vim.keymap.set("n", "<leader>h", "<cmd>noh<CR>")

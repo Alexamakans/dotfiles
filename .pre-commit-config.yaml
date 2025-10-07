@@ -11,19 +11,21 @@ repos:
       - id: check-merge-conflict
 
   # Format Nix files
-  - repo: https://github.com/kamadorueda/alejandra
-    rev: 3.1.0
+  - repo: local
     hooks:
       - id: alejandra
-        name: alejandra (nix formatter)
+        name: alejandra (nixpkgs)
+        entry: alejandra
+        language: system
         types_or: [nix]
-        additional_dependencies: [] # uses the hook's pinned binary
 
   # Shell: formatter + linter
-  - repo: https://github.com/pre-commit/mirrors-shfmt
-    rev: v3.10.0
+  - repo: local
     hooks:
       - id: shfmt
+        name: shfmt (nixpkgs)
+        entry: shfmt
+        language: system
         args: [-i, "2", -ci, -bn] # 2-space indent, indent switch cases, binary ops at line start
         files: \.sh$
 
@@ -34,26 +36,22 @@ repos:
         files: \.sh$
 
   # Lua: formatter
-  - repo: https://github.com/JohnnyMorganz/StyLua
-    rev: v0.20.0
+  - repo: local
     hooks:
       - id: stylua
+        name: stylua (nixpkgs)
+        entry: stylua
+        language: system
         files: \.lua$
 
-  # TOML: formatter
-  - repo: https://github.com/tamasfe/taplo
-    rev: 0.9.3
-    hooks:
-      - id: taplo-format
-        files: \.toml$
-
   # CSS (and more, if you want later) via Prettier
-  - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.3.3
+  - repo: local
     hooks:
       - id: prettier
-        name: prettier (css only)
-        files: \.css$
+        name: prettier (nixpkgs)
+        entry: prettier
+        language: system
+        types: [css, toml]
         # If you later want Prettier for more types, add them to files or use types: [css, ...]
   - repo: local
     hooks:
@@ -63,4 +61,4 @@ repos:
         language: system # use the luacheck provided by Nix
         types_or: [lua]
         files: \.lua$
-        # speed: run on changed files; use `pre-commit run luacheck -a` to lint all
+        # run on changed files; use `pre-commit run luacheck -a` to lint all

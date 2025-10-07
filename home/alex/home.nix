@@ -1,6 +1,10 @@
-{ config, pkgs, lib, inputs, ... }:
-
-let
+{
+  config,
+  pkgs,
+  lib,
+  inputs,
+  ...
+}: let
   dot = ../../files;
 
   # strip a leading "/" so the destination stays under $HOME
@@ -66,7 +70,7 @@ in {
         pre-commit
       ];
 
-      home.sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];
+      home.sessionPath = ["${config.home.homeDirectory}/.local/bin"];
       home.sessionVariables = {
         EDITOR = "nvim";
         BROWSER = "qutebrowser";
@@ -87,9 +91,11 @@ in {
       home.file.".gitconfig".source = dot + "/.gitconfig";
       home.file.".gitconfig-ssh".source = dot + "/.gitconfig-ssh";
 
-      xdg.configFile."qutebrowser/config.py".source = dot
+      xdg.configFile."qutebrowser/config.py".source =
+        dot
         + "/.config/qutebrowser/config.py";
-      xdg.configFile."qutebrowser/quickmarks".source = dot
+      xdg.configFile."qutebrowser/quickmarks".source =
+        dot
         + "/.config/qutebrowser/quickmarks";
 
       programs.ssh = {
@@ -104,29 +110,27 @@ in {
         enable = true;
         extraConfig = {
           gpg.format = "ssh";
-          "gpg \"ssh\"".program =
-            "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+          "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
           commit.gpgsign = true;
-          user.signingKey =
-            "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP6v8sgTuwobr8g+NnGZm72/E9xjgjXjy5IS3QWj3lga";
+          user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP6v8sgTuwobr8g+NnGZm72/E9xjgjXjy5IS3QWj3lga";
         };
       };
 
       programs.zoxide = {
         enable = true;
         enableBashIntegration = true;
-        options = [ "--cmd" "cd" "--hook" "pwd" ];
+        options = ["--cmd" "cd" "--hook" "pwd"];
       };
 
-      programs.viture = { enable = true; };
+      programs.viture = {enable = true;};
 
       programs.vituredynamicdisplay = {
         enable = true;
         vendorId = "35ca";
         productId = "101d";
         laptopOutput = "eDP-1";
-        headlessNames = [ "headless-1" "headless-2" "headless-3" ];
-        headlessWorkspaces = [ 1 2 3 ];
+        headlessNames = ["headless-1" "headless-2" "headless-3"];
+        headlessWorkspaces = [1 2 3];
         laptopWorkspace = 4;
         renameWorkspaces = true;
         workspaceNames = {

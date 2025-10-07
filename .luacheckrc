@@ -37,4 +37,3 @@ allow_defined = true
 allow_global = false
 allow_unused_globals = false
 ignore = { "231" }           -- …except allow `_`-prefixed locals/args (Luacheck’s rule 231 handles this)
-

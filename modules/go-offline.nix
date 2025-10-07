@@ -1,8 +1,14 @@
-{ config, lib, pkgs, ... }:
-let cfg = config.programs.goOffline;
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  cfg = config.programs.goOffline;
 in {
   options.programs.goOffline = with lib; {
-    enable = mkEnableOption
+    enable =
+      mkEnableOption
       "Force Go tooling to use local/vendor deps only (no network)";
     useVendor = mkOption {
       type = types.bool;
@@ -19,7 +25,10 @@ in {
     home.sessionVariables = {
       GOPROXY = "off";
       GOSUMDB = "off";
-      GOFLAGS = if cfg.useVendor then "-mod=vendor" else "-mod=readonly";
+      GOFLAGS =
+        if cfg.useVendor
+        then "-mod=vendor"
+        else "-mod=readonly";
     };
   };
 }

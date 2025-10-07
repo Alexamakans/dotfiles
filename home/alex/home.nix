@@ -62,7 +62,7 @@ in {
         shellcheck
         taplo # toml
         stylua
-        luacheck
+        luaPackages.luacheck
         pre-commit
       ];
 
@@ -85,6 +85,7 @@ in {
       };
 
       home.file.".gitconfig".source = dot + "/.gitconfig";
+      home.file.".gitconfig-ssh".source = dot + "/.gitconfig-ssh";
 
       xdg.configFile."qutebrowser/config.py".source = dot
         + "/.config/qutebrowser/config.py";

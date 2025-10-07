@@ -65,7 +65,7 @@ in lib.mkMerge [
       shellcheck
       taplo # toml
       stylua # lua
-      luacheck
+      luaPackages.luacheck
       pre-commit
     ];
 
@@ -102,6 +102,7 @@ in lib.mkMerge [
     };
 
     home.file.".gitconfig".source = dot + "/.gitconfig";
+    home.file.".gitconfig-ssh".source = dot + "/.gitconfig-ssh";
 
     # qutebrowser:
     #   Manage specifics like config.py and quickmarks.

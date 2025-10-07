@@ -6,6 +6,7 @@ nl.setup({
     nl.builtins.formatting.goimports,
     nl.builtins.formatting.prettier,
     nl.builtins.formatting.clang_format,
+    nl.builtins.formatting.mdformat,
     nl.builtins.formatting.shfmt.with({
       args = {
         "--indent",

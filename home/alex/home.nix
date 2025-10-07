@@ -26,7 +26,6 @@ in {
       home.stateVersion = "25.05";
 
       home.packages = with pkgs; [
-        nixfmt
         git
         gitleaks
         neovim
@@ -52,6 +51,15 @@ in {
         cmake
         pkg-config
         clang-tools # provides clangd
+
+        # formatting tools/pre-commit
+        alejandra # nix
+        shfmt
+        shellcheck
+        taplo # toml
+        stylua
+        luacheck
+        pre-commit
       ];
 
       home.sessionPath = [ "${config.home.homeDirectory}/.local/bin" ];

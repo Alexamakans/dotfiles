@@ -26,8 +26,6 @@ in lib.mkMerge [
     # The home.packages option allows you to install Nix packages into your
     # environment.
     home.packages = with pkgs; [
-      nixfmt
-
       git
       gitleaks
 
@@ -60,6 +58,15 @@ in lib.mkMerge [
       # c/c++ develeopment
       cmake
       pkg-config
+
+      # formatting tools/pre-commit
+      alejandra # nix
+      shfmt
+      shellcheck
+      taplo # toml
+      stylua # lua
+      luacheck
+      pre-commit
     ];
 
     # Home Manager can also manage your environment variables through

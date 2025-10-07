@@ -116,11 +116,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1759777859,
-        "narHash": "sha256-ZN0kur3bJQTaX6fyCjZCOppp87jJJyTqtSPOjEN6/Po=",
+        "lastModified": 1759783353,
+        "narHash": "sha256-Nj2LrcgZWvnQVWUhQJDVrVFtUkbI6NGJOultua0B9MQ=",
         "owner": "Alexamakans",
         "repo": "multimon-wayland",
-        "rev": "1aff62d531f2b0e466df498d22f057f5e60e6c21",
+        "rev": "97f49b8a580a5d4ceea828f45e2def4a2cb2f1f1",
         "type": "github"
       },
       "original": {

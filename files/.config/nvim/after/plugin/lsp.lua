@@ -100,6 +100,7 @@ require("mason-lspconfig").setup({
 --vim.lsp.enable({ 'vtsls', 'vue_ls' })
 
 vim.lsp.enable("clangd")
+vim.lsp.enable("gopls")
 
 require("lsp_signature").setup({
   close_timeout = 2000,

@@ -30,45 +30,51 @@ in
       # The home.packages option allows you to install Nix packages into your
       # environment.
       home.packages = with pkgs; [
+        file
+
         git
         gitleaks
-
         neovim
         ripgrep
-        fzf # fuzzy finder
-
+        fzf
         jq
         yq-go
-        dig
-
         zip
         unzip
-
         gcc
         editorconfig-core-c
-
-        python3
-
-        qutebrowser # keyboard-first browser
-
+        qutebrowser
         shikane # Dynamic display output configuration
-
         discord
+        zoxide
+        gdb
 
-        # golang development
+        # network tools
+        dig
+        nmap
+        wget
+
+        # golang
         go
         gopls
+        gotools # e.g. goimports
+        revive
 
-        # c/c++ develeopment
+        # c/c++
         cmake
         pkg-config
+        clang-tools # provides clangd
+
+        # python
+        python3
+        mypy
 
         # formatting tools/pre-commit
         alejandra # nix
         shfmt
         shellcheck
         taplo # toml
-        stylua # lua
+        stylua
         luaPackages.luacheck
         pre-commit
       ];

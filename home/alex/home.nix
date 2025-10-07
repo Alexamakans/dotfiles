@@ -34,6 +34,8 @@ in {
       home.stateVersion = "25.05";
 
       home.packages = with pkgs; [
+        file
+
         git
         gitleaks
         neovim
@@ -46,19 +48,26 @@ in {
         unzip
         gcc
         editorconfig-core-c
-        python3
         qutebrowser
         shikane # Dynamic display output configuration
         discord
         zoxide
         gdb
+
         # golang
         go
         gopls
+        gotools # e.g. goimports
+        revive
+
         # c/c++
         cmake
         pkg-config
         clang-tools # provides clangd
+
+        # python
+        python3
+        mypy
 
         # formatting tools/pre-commit
         alejandra # nix
@@ -121,7 +130,9 @@ in {
         enableBashIntegration = true;
         options = ["--cmd" "cd" "--hook" "pwd"];
       };
+    }
 
+    {
       programs.viture = {enable = true;};
 
       programs.vituredynamicdisplay = {
@@ -140,6 +151,12 @@ in {
           "4" = "4-Laptop";
         };
       };
+    }
+
+    {
+      home.file.".config/hypr/conf.d/viture.conf".text = ''
+        windowrulev2 = fullscreen, class:^(viture_ar_desktop_wayland_dmabuf)$
+      '';
     }
 
     (mkHomeFileRecursive ".config/hypr")

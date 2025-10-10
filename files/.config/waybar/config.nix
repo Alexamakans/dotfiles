@@ -8,7 +8,7 @@
 
     # Choose the order of the modules
     modules-left = ["hyprland/workspaces"];
-    modules-center = [];
+    modules-center = ["hyprland/language"];
     modules-right = ["network" "pulseaudio" "cpu" "memory" "backlight" "battery" "clock"];
 
     # Hyprland
@@ -18,6 +18,12 @@
       persistent-only = true; # show only the persistent ones
       show-special = false; # hide special workspaces
       all-outputs = false; # (optional) only show for the current output
+    };
+
+    "hyprland/language" = {
+      format = "{}";
+      format-en = "US";
+      format-se = "SE";
     };
 
     clock = {

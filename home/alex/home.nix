@@ -69,14 +69,19 @@ in {
         python3
         mypy
 
-        # formatting tools/pre-commit
+        # formatting/linting tools
         alejandra # nix
         shfmt
         shellcheck
         taplo # toml
         stylua
         luaPackages.luacheck
+        mdformat
+
         pre-commit
+
+        # used for rtl-sdr
+        gqrx
       ];
 
       home.sessionPath = ["${config.home.homeDirectory}/.local/bin"];

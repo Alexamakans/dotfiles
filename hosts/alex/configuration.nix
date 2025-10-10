@@ -132,6 +132,8 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+  networking.firewall.enable = true;
+
   networking.networkmanager.enable = true;
   services.blueman.enable = true;
 

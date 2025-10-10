@@ -39,4 +39,7 @@
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.intel.updateMicrocode =
     lib.mkDefault config.hardware.enableRedistributableFirmware;
+
+  # enable rtl-sdr for playing with radio
+  hardware.rtl-sdr.enable = true; # also requires 'plugdev' group
 }

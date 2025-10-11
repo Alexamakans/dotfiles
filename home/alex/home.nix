@@ -91,8 +91,17 @@ in {
 
         # test stuff temporary internyet
         # TODO: install when internet
-        # libgcrypt
-        # make
+        libgcrypt
+        sage
+        binwalk
+
+        stdenv # includes gnumake (i.e. make cli)
+        gnumake # explicit because why not
+
+        p7zip
+
+        playonlinux
+        weechat
       ];
 
       home.sessionPath = ["${config.home.homeDirectory}/.local/bin"];
@@ -181,5 +190,6 @@ in {
     (mkHomeFileRecursive ".config/shikane")
     (mkHomeFileRecursive ".config/kitty")
     (mkHomeFileRecursive ".config/nvim")
+    (mkHomeFileRecursive ".config/weechat")
   ];
 }

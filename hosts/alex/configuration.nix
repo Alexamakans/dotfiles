@@ -16,7 +16,14 @@
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  nix.settings.experimental-features = ["nix-command" "flakes"];
+  nix.settings = {
+    experimental-features = ["nix-command" "flakes"];
+    # local mirror for when internyeting
+    substituters = [
+      "file:///mirror" # your local cache, checked first
+      "https://cache.nixos.org" # optional fallback when online
+    ];
+  };
 
   networking.hostName = "alex"; # Define your hostname.
   # TODO: remove after internyet
@@ -205,7 +212,7 @@
   };
 
   nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) ["1password" "1password-cli" "discord"];
+    builtins.elem (lib.getName pkg) ["1password" "1password-cli" "discord" "steam-unwrapped"];
 
   programs._1password.enable = true;
   programs._1password-gui.enable = true;

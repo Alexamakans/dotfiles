@@ -90,6 +90,7 @@
 
     reassert_mapping() {
       # try a few times to beat any post-hotplug reshuffle
+      sleep 2 # big sleep, rather correct than fast
       for _ in $(seq 1 5); do
         ${
       lib.concatMapStrings (i: let
@@ -102,7 +103,7 @@
         hyprctl dispatch moveworkspacetomonitor ${
       toString cfg.laptopWorkspace
     } "$LAPTOP"
-        sleep 0.05
+        sleep 0.5
       done
     }
 

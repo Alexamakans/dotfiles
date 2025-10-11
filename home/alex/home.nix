@@ -44,6 +44,7 @@ in {
         jq
         yq-go
         dig
+        nmap
         zip
         unzip
         gcc
@@ -82,6 +83,16 @@ in {
 
         # used for rtl-sdr
         gqrx
+
+        # certutil and other nssdb tools
+        nssTools
+
+        docker
+
+        # test stuff temporary internyet
+        # TODO: install when internet
+        # libgcrypt
+        # make
       ];
 
       home.sessionPath = ["${config.home.homeDirectory}/.local/bin"];

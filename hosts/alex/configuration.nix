@@ -19,6 +19,8 @@
   nix.settings.experimental-features = ["nix-command" "flakes"];
 
   networking.hostName = "alex"; # Define your hostname.
+  # TODO: remove after internyet
+  networking.nameservers = ["10.13.37.1"];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -43,12 +45,15 @@
   };
 
   users.groups.plugdev = {};
+  users.groups.alex = {};
+  users.groups.docker = {};
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.alex = {
     isNormalUser = true;
     description = "alex";
     extraGroups = [
+      "alex"
       "networkmanager"
       "wheel"
       "video"
@@ -57,7 +62,7 @@
       "plugdev"
       "dialout" # for viture mostly, but for ttyACM0 generally
 
-      "docker"
+      "docker" # no need for `sudo docker`
     ];
   };
 
@@ -97,7 +102,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   services.greetd = {
     enable = true;
@@ -108,7 +113,8 @@
     };
   };
 
-  services.printing = {enable = false;};
+  services.printing.enable = false;
+  services.avahi.enable = true;
 
   services.hardware.bolt.enable = true;
 
@@ -133,6 +139,7 @@
   # networking.firewall.enable = false;
 
   networking.firewall.enable = true;
+  # networking.firewall.allowedTCPPorts = [ 42069 ];
 
   networking.networkmanager.enable = true;
   services.blueman.enable = true;
@@ -211,4 +218,6 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.05"; # Did you read the comment?
+
+  virtualisation.docker.enable = true;
 }

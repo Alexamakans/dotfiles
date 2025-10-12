@@ -16,6 +16,11 @@
       recursive = true;
     };
   };
+
+  hyprPluginDir = pkgs.symlinkJoin {
+    name = "hyprland-plugins-dir";
+    paths = [pkgs.hyprlandPlugins.hyprwinwrap];
+  };
 in {
   # ← module-level field (NOT merged)
   imports = [
@@ -102,7 +107,35 @@ in {
 
         playonlinux
         weechat
+
+        # python
+        pyright
+        ruff
+
+        prismlauncher # minecraft
+
+        # audio visualizer
+        cava
+
+        #hyprlandPlugins.hyprwinwrap
+
+        # security key stuff
+        libfido2 # provides fido2-token
+        yubikey-manager # provides ykman
+
+        pavucontrol
+        mpvpaper
       ];
+
+      programs.mpv = {
+        enable = true;
+        package = pkgs.mpv.override {
+          # IMPORTANT: the wrapper argument is named `mpv`, not `mpv-unwrapped`
+          mpv = pkgs.mpv-unwrapped.override {
+            ffmpeg = pkgs.ffmpeg-full;
+          };
+        };
+      };
 
       home.sessionPath = ["${config.home.homeDirectory}/.local/bin"];
       home.sessionVariables = {
@@ -183,6 +216,28 @@ in {
         windowrulev2 = fullscreen, title:^(Viture AR \(Wayland DMA-BUF\))$
         windowrulev2 = fullscreen, initialtitle:^(Viture AR \(Wayland DMA-BUF\))$
       '';
+    }
+
+    {
+      # Start mpvpaper at login, on all outputs ("*")
+      systemd.user.services.mpvpaper = {
+        Unit = {
+          Description = "Live audio visualizer wallpaper (mpvpaper)";
+          After = ["graphical-session.target"];
+          PartOf = ["graphical-session.target"];
+        };
+        Service = {
+          ExecStart = ''
+            ${pkgs.mpvpaper}/bin/mpvpaper ALL \
+              -o "--no-osc --no-osd-bar --loop-file=no \
+                  hwdec=auto-safe \
+                  --lavfi-complex=[aid1]asplit[ao][a];[a]showcqt=s=1920x1080:count=30:fps=60,format=rgba[vo] \
+                  ao=null" av://pulse:$(pactl get-default-sink)
+          '';
+          Restart = "on-failure";
+        };
+        Install = {WantedBy = ["graphical-session.target"];};
+      };
     }
 
     (mkHomeFileRecursive ".config/hypr")

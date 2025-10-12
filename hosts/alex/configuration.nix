@@ -21,13 +21,12 @@
     # local mirror for when internyeting
     substituters = [
       "file:///mirror" # your local cache, checked first
-      "https://cache.nixos.org" # optional fallback when online
+      # "https://cache.nixos.org" # optional fallback when online
     ];
   };
 
   networking.hostName = "alex"; # Define your hostname.
-  # TODO: remove after internyet
-  networking.nameservers = ["10.13.37.1"];
+  # networking.nameservers = ["10.13.37.1"];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -96,7 +95,22 @@
     # Viture Pro XR disconnect
     ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_VENDOR_ID}=="35ca", ENV{ID_MODEL_ID}=="101d", \
       TAG+="systemd", ENV{SYSTEMD_USER_WANTS}+="vituredynamicdisplay@remove.service"
+
+    # Titan Security key
+    KERNEL=="hidraw*", SUBSYSTEM=="hidraw", ATTRS{idVendor}=="18d1", \
+      ATTRS{idProduct}=="9470", TAG+="uaccess"
   '';
+
+  # security key stuff
+  services.pcscd.enable = true;
+  services.udev.packages = [
+    pkgs.libfido2
+    pkgs.libu2f-host
+    pkgs.yubikey-manager
+    pkgs.yubikey-personalization
+  ];
+  services.passSecretService.enable = true;
+  hardware.gpgSmartcards.enable = true; # allow sec key to be used for GPG/PIV
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -121,9 +135,14 @@
   };
 
   services.printing.enable = false;
-  services.avahi.enable = true;
+  services.avahi.enable = true; # Gqrx needs this to find rtl-sdr devices
 
   services.hardware.bolt.enable = true;
+
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn;
+  };
 
   xdg.portal = {
     enable = true;
@@ -151,8 +170,16 @@
   networking.networkmanager.enable = true;
   services.blueman.enable = true;
 
-  hardware.graphics.enable = true;
-  hardware.graphics.enable32Bit = true;
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+
+    extraPackages = with pkgs; [
+      intel-media-driver # iHD driver (Broadwell 2014+)
+      intel-vaapi-driver # i965 (older; helps sometimes)
+    ];
+  };
+  environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
 
   fonts.packages =
     []
@@ -172,6 +199,8 @@
 
   environment.systemPackages = with pkgs; [
     home-manager
+
+    pulseaudio # provides pactl
 
     hyprland
     hyprpaper

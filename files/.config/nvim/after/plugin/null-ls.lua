@@ -7,6 +7,7 @@ nl.setup({
     nl.builtins.formatting.prettier,
     nl.builtins.formatting.clang_format,
     nl.builtins.formatting.mdformat,
+    nl.builtins.formatting.ruff,
     nl.builtins.formatting.shfmt.with({
       args = {
         "--indent",

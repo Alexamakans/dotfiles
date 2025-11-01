@@ -76,6 +76,7 @@ in {
         basedpyright
         ruff
         uv
+        uv2nix
 
         # formatting/linting tools
         alejandra # nix

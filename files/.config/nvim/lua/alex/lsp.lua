@@ -81,17 +81,20 @@ require("mason").setup({})
 -- shared.lsps is a table populated by profiles.
 local lsps = require("shared.lsps")
 
-local ensure_servers = {}
-
-if os.getenv("NIXOS_NVIM") ~= "1" then
-  ensure_servers = vim.tbl_map(function(s)
-    return s.name
-  end, lsps)
+local ensure_servers = vim.tbl_map(function(s)
+  return s.name
+end, lsps)
+if os.getenv("NIXOS_NVIM") == "1" then
+  require("mason-lspconfig").setup({
+    ensure_installed = {},
+    automatic_enable = true,
+  })
+else
+  require("mason-lspconfig").setup({
+    ensure_installed = ensure_servers,
+    automatic_enable = true,
+  })
 end
-require("mason-lspconfig").setup({
-  ensure_installed = ensure_servers,
-  automatic_enable = true,
-})
 
 local caps = require("cmp_nvim_lsp").default_capabilities()
 
@@ -151,8 +154,7 @@ for _, s in ipairs(lsps) do
   end
 end
 
--- Install tools at startup. If you don’t want this, skip this block.
--- Requires: 'WhoIsSethDaniel/mason-tool-installer.nvim'
+-- Install tools at startup.
 require("mason-tool-installer").setup({
   ensure_installed = ensure_tools,
   auto_update = false,

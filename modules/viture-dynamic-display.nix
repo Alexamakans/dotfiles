@@ -285,8 +285,8 @@ in {
     systemd.user.services.vituredynamicdisplay-monitor = {
       Unit = {
         Description = "Monitor USB ${cfg.vendorId}:${cfg.productId} and toggle Hyprland headless mode";
-        PartOf = ["graphical-session.target"];
-        After = ["graphical-session.target"];
+        PartOf = ["default.target"];
+        After = ["default.target"];
       };
       Service = {
         ExecStart = "${scriptMonitor}";
@@ -296,7 +296,7 @@ in {
         # The file is written by an exec-once in %t/hypr/hyprland.conf
         EnvironmentFile = "%t/hypr/hyprland.env";
       };
-      Install = {WantedBy = ["graphical-session.target"];};
+      Install = {WantedBy = ["default.target"];};
     };
 
     # Convenience oneshot units so you can trigger manually if you want:

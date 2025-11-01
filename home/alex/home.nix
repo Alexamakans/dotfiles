@@ -218,27 +218,28 @@ in {
       '';
     }
 
-    {
-      # Start mpvpaper at login, on all outputs ("*")
-      systemd.user.services.mpvpaper = {
-        Unit = {
-          Description = "Live audio visualizer wallpaper (mpvpaper)";
-          After = ["graphical-session.target"];
-          PartOf = ["graphical-session.target"];
-        };
-        Service = {
-          ExecStart = ''
-            ${pkgs.mpvpaper}/bin/mpvpaper ALL \
-              -o "--no-osc --no-osd-bar --loop-file=no \
-                  hwdec=auto-safe \
-                  --lavfi-complex=[aid1]asplit[ao][a];[a]showcqt=s=1920x1080:count=30:fps=60,format=rgba[vo] \
-                  ao=null" av://pulse:$(pactl get-default-sink)
-          '';
-          Restart = "on-failure";
-        };
-        Install = {WantedBy = ["graphical-session.target"];};
-      };
-    }
+    # {
+    #   # Start mpvpaper at login, on all outputs ("*")
+    #   systemd.user.services.mpvpaper = {
+    #     Unit = {
+    #       Description = "Live audio visualizer wallpaper (mpvpaper)";
+    #       After = ["default.target"];
+    #       PartOf = ["default.target"];
+    #     };
+    #     Service = {
+    #       ExecStart = ''
+    #         ${pkgs.mpvpaper}/bin/mpvpaper ALL \
+    #           -o "no-audio --no-osc --no-osd-bar --loop-file=no \
+    #               hwdec=auto-safe \
+    #               --lavfi-complex=[aid1]asplit[ao][a];[a]showcqt=s=1920x1080:count=30:fps=60,format=rgba[vo] \
+    #               ao=null" av://pulse:$(pactl get-default-sink).monitor
+    #       '';
+    #       Restart = "on-failure";
+    #       RestartSec = 5;
+    #     };
+    #     Install = {WantedBy = ["default.target"];};
+    #   };
+    # }
 
     (mkHomeFileRecursive ".config/hypr")
     (mkHomeFileRecursive ".config/waybar")

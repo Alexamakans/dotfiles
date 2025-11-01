@@ -144,6 +144,9 @@ in {
         EDITOR = "nvim";
         BROWSER = "qutebrowser";
         GOBIN = "${config.home.homeDirectory}/.local/bin";
+
+        # Tell my nvim config to not e.g. install stuff via Mason
+        NIXOS_NVIM = 1;
       };
 
       programs.bash = {

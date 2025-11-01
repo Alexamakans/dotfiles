@@ -133,7 +133,4 @@ in
     (mkHomeFileRecursive ".config/kitty")
 
     (mkHomeFileRecursive ".config/nvim")
-    (mkHomeFileRecursive ".config/nvim-python")
-    (mkHomeFileRecursive ".config/nvim-lua")
-    (mkHomeFileRecursive ".config/nvim-nvim")
   ]

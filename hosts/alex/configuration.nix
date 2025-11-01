@@ -189,6 +189,9 @@
   # QOL env for Electron/Chromium apps on Wayland
   environment.sessionVariables.NIXOS_OZONE_WL = "1";
 
+  # Tell my nvim config to not e.g. install stuff via Mason
+  environment.sessionVariables.NIXOS_NVIM = "1";
+
   profile.flatpak = {
     enable = true;
     portalBackend = "wlr";

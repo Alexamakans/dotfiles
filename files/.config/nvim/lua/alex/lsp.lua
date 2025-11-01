@@ -81,9 +81,13 @@ require("mason").setup({})
 -- shared.lsps is a table populated by profiles.
 local lsps = require("shared.lsps")
 
-local ensure_servers = vim.tbl_map(function(s)
-  return s.name
-end, lsps)
+local ensure_servers = {}
+
+if os.getenv("NIXOS_NVIM") ~= "1" then
+  ensure_servers = vim.tbl_map(function(s)
+    return s.name
+  end, lsps)
+end
 require("mason-lspconfig").setup({
   ensure_installed = ensure_servers,
   automatic_enable = true,
@@ -113,8 +117,10 @@ for _, s in ipairs(lsps) do
   local t = s.tools or {}
 
   -- collect mason tool names
-  for _, pkg in ipairs(t.mason or {}) do
-    table.insert(ensure_tools, pkg)
+  if os.getenv("NIXOS_NVIM") ~= "1" then
+    for _, pkg in ipairs(t.mason or {}) do
+      table.insert(ensure_tools, pkg)
+    end
   end
 
   -- merge conform formatters

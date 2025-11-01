@@ -73,7 +73,9 @@ in {
 
         # python
         python3
-        mypy
+        basedpyright
+        ruff
+        uv
 
         # formatting/linting tools
         alejandra # nix
@@ -245,7 +247,11 @@ in {
     (mkHomeFileRecursive ".config/waybar")
     (mkHomeFileRecursive ".config/shikane")
     (mkHomeFileRecursive ".config/kitty")
-    (mkHomeFileRecursive ".config/nvim")
     (mkHomeFileRecursive ".config/weechat")
+
+    (mkHomeFileRecursive ".config/nvim")
+    (mkHomeFileRecursive ".config/nvim-python")
+    (mkHomeFileRecursive ".config/nvim-lua")
+    (mkHomeFileRecursive ".config/nvim-nvim")
   ];
 }

@@ -23,3 +23,6 @@ export GIT_EDITOR=nvim
 
 alias n="nvim ."
 alias nt="nvim"
+
+# TODO: source entire dir
+source $HOME/dotfiles/files/.bashrc.d/10-nvim-profile-selector-functions

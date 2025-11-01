@@ -131,5 +131,9 @@ in
     (mkHomeFileRecursive ".config/waybar")
     (mkHomeFileRecursive ".config/shikane")
     (mkHomeFileRecursive ".config/kitty")
+
     (mkHomeFileRecursive ".config/nvim")
+    (mkHomeFileRecursive ".config/nvim-python")
+    (mkHomeFileRecursive ".config/nvim-lua")
+    (mkHomeFileRecursive ".config/nvim-nvim")
   ]

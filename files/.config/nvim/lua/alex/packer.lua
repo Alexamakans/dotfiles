@@ -23,66 +23,65 @@ end
 
 -- Install your plugins here
 return packer.startup(function(use)
-  use({ "neovim/nvim-lspconfig" })
+  use("wbthomason/packer.nvim") -- Have packer manage itself
+
   use({ "williamboman/mason.nvim" })
-  use({ "williamboman/mason-lspconfig.nvim" })
+  use({ "WhoIsSethDaniel/mason-tool-installer.nvim" })
+  use({ "mason-org/mason-lspconfig.nvim", requires = { "neovim/nvim-lspconfig" } })
+  use({ "stevearc/conform.nvim" })
+  use({ "mfussenegger/nvim-lint" })
   use({ "hrsh7th/nvim-cmp" })
   use({ "hrsh7th/cmp-nvim-lsp" })
   use({ "hrsh7th/cmp-buffer" })
+  use({ "neovim/nvim-lspconfig" })
   use({ "hrsh7th/cmp-path" })
   use({ "hrsh7th/cmp-cmdline" })
-  use({ "L3MON4D3/LuaSnip" })
-  use({ "saadparwaiz1/cmp_luasnip" })
-  use({ "nvimtools/none-ls.nvim" })
-
-  use("wbthomason/packer.nvim") -- Have packer manage itself
 
   use({
     "nvim-telescope/telescope.nvim",
-    tag = "0.1.3",
+    tag = "0.1.8",
     requires = { "nvim-lua/plenary.nvim" },
-  })
-
-  use({
-    "rose-pine/neovim",
-    as = "rose-pine",
-    config = function()
-      vim.cmd("colorscheme rose-pine")
-    end,
   })
 
   use("nvim-treesitter/nvim-treesitter", { run = ":TSUpdate" })
   use("nvim-treesitter/playground")
 
   use({
-    "Vonr/align.nvim",
-    branch = "v2",
-  })
-
-  use({
     "ray-x/lsp_signature.nvim",
     tag = "v0.3.1",
+    config = function()
+      require("lsp_signature").setup({
+        close_timeout = 2000,
+        transparency = 100, -- this is actually opacity
+      })
+    end,
   })
-
-  -- use('github/copilot.vim')
 
   use("APZelos/blamer.nvim")
 
   use({
-    "hedyhli/markdown-toc.nvim",
-  })
-
-  use({
-    "nvim-tree/nvim-web-devicons",
-  })
-
-  use({
     "nvim-lualine/lualine.nvim",
     requires = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("lualine").setup({
+        options = {
+          icons_enabled = true,
+          theme = "auto",
+        },
+        sections = {
+          lualine_a = {},
+          lualine_b = { "branch", "diff", "diagnostics" },
+          lualine_c = { { "filename", path = 1 } },
+          lualine_x = {},
+          lualine_y = { "progress" },
+          lualine_z = { "location" },
+        },
+      })
+    end,
   })
 
   use({
-    "hiphish/rainbow-delimiters.nvim",
+    "HiPhish/rainbow-delimiters.nvim",
   })
 
   use({
@@ -98,11 +97,20 @@ return packer.startup(function(use)
   })
 
   use({
-    "TheLeoP/powershell.nvim",
+    "rose-pine/neovim",
+    as = "rose-pine",
+    config = function()
+      vim.cmd("colorscheme rose-pine")
+    end,
   })
 
   use({
-    "christoomey/vim-tmux-navigator",
+    "ggandor/leap.nvim",
+    config = function()
+      vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap)")
+      vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
+    end,
+    requires = "tpope/vim-repeat",
   })
 
   if PACKER_BOOTSTRAP then

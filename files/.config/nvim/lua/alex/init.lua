@@ -1,9 +1,10 @@
-require("alex.filetypes")
-require("alex.remap")
 require("alex.packer")
-require("alex.set")
-require("alex.colors")
-require("alex.list_formatters")
-require("alex.render_whitespace")
+require("alex.settings")
 
-require("alex.golang_mappings")
+require("alex.graphics")
+require("alex.user_commands")
+
+require("alex.treesitter")
+require("alex.lsp")
+
+require("alex.remap")

@@ -1,5 +1,6 @@
-vim.opt.list = true
-vim.opt.listchars:append({ trail = ".", tab = "T~" })
+vim.opt.list = false
+--vim.opt.listchars:append({ trail = ".", tab = "T~" })
+--vim.opt.listchars:append({ trail = "." })
 
 -- Group for our autocmds
 local aug = vim.api.nvim_create_augroup("WhitespaceHL", { clear = true })
@@ -7,7 +8,7 @@ local aug = vim.api.nvim_create_augroup("WhitespaceHL", { clear = true })
 -- Re-apply highlight colors when the colorscheme changes
 local function set_whitespace_hl()
   vim.api.nvim_set_hl(0, "EoLSpace", { bg = "#aaaa33" })
-  vim.api.nvim_set_hl(0, "Tabs", { bg = "#ff3377" })
+  --vim.api.nvim_set_hl(0, "Tabs", { bg = "#ff3377" })
 end
 
 vim.api.nvim_create_autocmd("ColorScheme", {
@@ -23,9 +24,9 @@ local function apply_matches_for_window()
   if vim.w._eolspace_match == nil then
     vim.w._eolspace_match = vim.fn.matchadd("EoLSpace", [[\s\+$]])
   end
-  if vim.w._tabs_match == nil then
-    vim.w._tabs_match = vim.fn.matchadd("Tabs", [[\t\+]])
-  end
+  --if vim.w._tabs_match == nil then
+  --  vim.w._tabs_match = vim.fn.matchadd("Tabs", [[\t\+]])
+  --end
 end
 
 vim.api.nvim_create_autocmd({ "VimEnter", "WinNew", "BufWinEnter" }, {

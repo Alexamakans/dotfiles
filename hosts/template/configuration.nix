@@ -149,7 +149,7 @@
     nodejs_22
     # npm -g equivalent:
     # nodePackages_latest.pnpm
-    nodePackages_latest.prettier
+    prettierd
   ];
 
   programs.hyprland = {

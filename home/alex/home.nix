@@ -39,6 +39,7 @@ in {
       home.stateVersion = "25.05";
 
       home.packages = with pkgs; [
+        gnupg
         file
 
         git
@@ -85,6 +86,10 @@ in {
         stylua
         luaPackages.luacheck
         mdformat
+        markdownlint-cli
+        prettierd
+        bash-language-server
+        lua-language-server
 
         pre-commit
 
@@ -172,17 +177,22 @@ in {
 
       programs.ssh = {
         enable = true;
+        forwardAgent = true;
         extraConfig = ''
           Host *
-              IdentityAgent ~/.1password/agent.sock
+            IdentityAgent ~/.1password/agent.sock
         '';
       };
 
       programs.git = {
         enable = true;
         extraConfig = {
-          gpg.format = "ssh";
-          "gpg \"ssh\"".program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+          gpg = {
+            format = "ssh";
+          };
+          "gpg \"ssh\"" = {
+            program = "${lib.getExe' pkgs._1password-gui "op-ssh-sign"}";
+          };
           commit.gpgsign = true;
           user.signingKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP6v8sgTuwobr8g+NnGZm72/E9xjgjXjy5IS3QWj3lga";
         };

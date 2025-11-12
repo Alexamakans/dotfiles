@@ -1,19 +1,9 @@
 [user]
   email = fougner.alexander@gmail.com
   name = Alexamakans
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP6v8sgTuwobr8g+NnGZm72/E9xjgjXjy5IS3QWj3lga
 
 [init]
   defaultBranch = main
-
-[gpg]
-  format = ssh
-
-[gpg "ssh"]
-  program = "/opt/1Password/op-ssh-sign"
-
-[commit]
-  gpgsign = true
 
 [includeIf "gitdir:~/dotfiles/"]
   path = /home/alex/.gitconfig-ssh
